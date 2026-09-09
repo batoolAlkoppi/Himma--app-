@@ -91,7 +91,7 @@
         .beige-motion {
             position: absolute;
             border-radius: 999px;
-            background: rgba(213, 228, 207, 0.72);
+            background: rgba(175, 194, 174, 0.42);
             filter: blur(1px);
             pointer-events: none;
         }
@@ -128,6 +128,20 @@
         @keyframes splashEnter { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
         @keyframes splashLogo { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
         @keyframes splashLine { 0%,100%{width:55px;opacity:.55} 50%{width:90px;opacity:1} }
+        .splash-enter-btn {
+            margin-top: 22px; padding: 10px 30px; border: 1px solid #AFC2AE; border-radius: 999px;
+            background: #2C3E35; color: #FCF7EC; font-family: 'Cairo', sans-serif; font-weight: 800;
+            font-size: 14px; cursor: pointer; box-shadow: 0 10px 28px rgba(44,62,53,.16);
+            transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+        }
+        .splash-enter-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(44,62,53,.22); background:#24342d; }
+        .splash-enter-btn:active { transform: scale(.97); }
+        .success-toast {
+            position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); z-index: 100000;
+            background:#2C3E35; color:#FCF7EC; padding:11px 18px; border-radius:999px; font-weight:800; font-size:13px;
+            box-shadow:0 12px 30px rgba(44,62,53,.2); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+        }
+        .success-toast.show { opacity:1; transform:translate(-50%,0); }
         @media (prefers-reduced-motion: reduce) {
             .beige-motion,.splash-logo,.splash-line { animation:none !important; }
         }
@@ -170,9 +184,10 @@
             <div class="splash-title">هِمّة</div>
             <div class="splash-welcome">أهلًا وسهلًا بكم في هِمّة</div>
             <div class="splash-line"></div>
+            <button id="splash-enter-btn" class="splash-enter-btn" type="button">أهلًا وسهلًا بكم — دخول</button>
         </div>
     </div>
-
+    <div id="success-toast" class="success-toast">تم حفظ صورة الحضور بنجاح ✨</div>
 
     <!-- HEADER -->
     <header class="sticky top-0 z-30 glass-panel border-b border-olive/30 shadow-sm">
@@ -316,7 +331,9 @@
                     <div id="export-tables-container" style="display: flex; gap: 15px; align-items: flex-start; justify-content: center; margin-bottom: 40px;">
                     </div>
 
-                    <!-- Developer signature is intentionally excluded from the exported image. -->
+                    <div style="position:absolute; bottom:20px; left:35px; font-family:'Dancing Script',cursive; font-size:18px; color:#78867B; font-weight:700; direction:ltr;">
+                        Developed by Batool ❤️
+                    </div>
                     <div style="position: absolute; bottom: 22px; right: 35px; font-size: 11px; font-weight: bold; color: #AFC2AE;">
                         نظام هِمّة لإدارة الحلقات القرآنية
                     </div>
@@ -394,10 +411,12 @@
                 }
             }
 
-            // Splash screen
-            setTimeout(() => {
-                document.getElementById('himma-splash')?.classList.add('hide');
-            }, 1700);
+            // Splash screen stays until the user explicitly enters.
+            document.getElementById('splash-enter-btn')?.addEventListener('click', () => {
+                const splash = document.getElementById('himma-splash');
+                splash?.classList.add('hide');
+                setTimeout(() => splash?.remove(), 650);
+            });
         });
 
         document.getElementById('pwa-install-btn')?.addEventListener('click', installApp);
@@ -497,9 +516,15 @@
             
             if (index > -1) {
                 student.history.splice(index, 1);
+                if (student.attendanceCountOverride !== undefined && student.attendanceCountOverride !== null) {
+                    student.attendanceCountOverride = Math.max(0, getAttendanceCount(student) - 1);
+                }
             } else {
                 student.history.push(today);
                 student.history.sort();
+                if (student.attendanceCountOverride !== undefined && student.attendanceCountOverride !== null) {
+                    student.attendanceCountOverride = getAttendanceCount(student) + 1;
+                }
             }
             saveData();
         }
@@ -553,15 +578,39 @@
             }
         }
 
+        function getAttendanceCount(student) {
+            if (student?.attendanceCountOverride !== undefined && student.attendanceCountOverride !== null) {
+                return Math.max(0, parseInt(student.attendanceCountOverride) || 0);
+            }
+            return Array.isArray(student?.history) ? student.history.length : 0;
+        }
+
         function getHeartColorClass(attendanceCount) {
             const fill = Math.min(Math.max(parseInt(attendanceCount) || 0, 0), 10);
             return `fill-${fill}`;
         }
 
-        function renderHeartBadgeHTML(streakCount, attendanceCount) {
+        function editStudentAttendanceCount(id) {
+            const circle = getActiveCircle();
+            const student = circle?.students.find(s => s.id === id);
+            if (!student) return;
+            const current = getAttendanceCount(student);
+            const val = prompt("عدّلي مجموع الحضور لهذه الطالبة:", current);
+            if (val === null) return;
+            if (val.trim() === '' || isNaN(val) || Number(val) < 0) {
+                alert('أدخلي رقمًا صحيحًا للحضور.');
+                return;
+            }
+            const parsed = Math.floor(Number(val));
+            const actual = Array.isArray(student.history) ? student.history.length : 0;
+            student.attendanceCountOverride = parsed === actual ? null : parsed;
+            saveData();
+        }
+
+        function renderHeartBadgeHTML(streakCount, attendanceCount, studentId) {
             const colorClass = getHeartColorClass(attendanceCount);
             return `
-                <div class="heart-badge ${colorClass}" title="التتابع: ${streakCount} | مجموع الحضور: ${attendanceCount}">
+                <div class="heart-badge ${colorClass}" onclick="editStudentAttendanceCount('${studentId}')" title="اضغطي لتعديل مجموع الحضور">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
@@ -603,7 +652,7 @@
                 const isPresent = student.history.includes(today);
                 const streak = getStreak(student);
                 const weeklyStreak = getWeeklyStreak(student);
-                const totalAttendanceCount = student.history ? student.history.length : 0;
+                const totalAttendanceCount = getAttendanceCount(student);
                 const starHTML = weeklyStreak >= 5
                     ? '<span class="five-week-star" title="٥ حضورات متتالية أسبوعيًا">★</span>'
                     : '';
@@ -620,7 +669,7 @@
                             </button>
                         </td>
                         <td class="p-2 text-center border-l border-olive/20">
-                            ${renderHeartBadgeHTML(streak, totalAttendanceCount)}
+                            ${renderHeartBadgeHTML(streak, totalAttendanceCount, student.id)}
                         </td>
                         <td class="p-2 text-center font-bold text-forest border-l border-olive/20">
                             ${totalAttendanceCount}
@@ -646,7 +695,7 @@
                 const isPresent = s.history.includes(today);
                 const streak = getStreak(s);
                 const weeklyStreak = getWeeklyStreak(s);
-                const totalAttendanceCount = s.history ? s.history.length : 0;
+                const totalAttendanceCount = getAttendanceCount(s);
                 const heartColors = ['#cbd5e1','#f7b6b2','#f28f8a','#e96f6a','#d94f4a','#b8322d','#8f2522','#6f1d1b','#8f6b35','#6f4f22','#51391a'];
                 const hexColor = heartColors[Math.min(totalAttendanceCount, 10)];
                 const textColor = totalAttendanceCount === 0 ? '#475569' : '#ffffff';
@@ -660,7 +709,7 @@
                                 <svg style="width:100%; height:100%; color:${hexColor}; fill:currentColor;" viewBox="0 0 24 24">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
-                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -52%); font-size:10px; font-weight:bold; color:${textColor};">${streak}</span>
+                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -52%); font-size:10px; font-weight:bold; color:${textColor};">${totalAttendanceCount}</span>
                             </div>
                         </td>
                         <td style="padding: 6px 6px; text-align: center; font-weight: bold; font-size: 12px; border-left: 1px solid #AFC2AE; color: #1F2E27; width: 18%;">${totalAttendanceCount}</td>
@@ -750,7 +799,7 @@
                 await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
                 const canvas = await html2canvas(target, {
-                    scale: 1.5,
+                    scale: 1.25,
                     backgroundColor: '#FCF7EC',
                     useCORS: true,
                     allowTaint: false,
@@ -761,17 +810,35 @@
                     windowHeight: 1123
                 });
 
-                canvas.toBlob((blob) => {
-                    if (!blob) throw new Error('PNG creation failed');
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.download = `تقرير_${(circle.circleName || 'الحلقة').replace(/\s+/g, '_')}_${today}.png`;
-                    link.href = url;
-                    document.body.appendChild(link);
-                    link.click();
-                    link.remove();
-                    setTimeout(() => URL.revokeObjectURL(url), 1500);
-                }, 'image/png');
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.92));
+                if (!blob) throw new Error('PNG creation failed');
+                const fileName = `تقرير_${(circle.circleName || 'الحلقة').replace(/\s+/g, '_')}_${today}.png`;
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = url;
+                link.rel = 'noopener';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+
+                // Mobile-friendly fallback: share the generated PNG when direct download is blocked.
+                if (navigator.canShare && navigator.share) {
+                    try {
+                        const file = new File([blob], fileName, { type: 'image/png' });
+                        if (navigator.canShare({ files: [file] })) {
+                            setTimeout(() => navigator.share({ title: 'تقرير هِمّة', files: [file] }).catch(() => {}), 180);
+                        }
+                    } catch (_) {}
+                }
+
+                const toast = document.getElementById('success-toast');
+                toast?.classList.add('show');
+                setTimeout(() => toast?.classList.remove('show'), 2600);
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 55, spread: 52, startVelocity: 24, origin: { y: 0.72 }, colors: ['#D5E4CF','#AFC2AE','#2C3E35'] });
+                }
+                setTimeout(() => URL.revokeObjectURL(url), 4000);
 
             } catch (error) {
                 console.error('Export error:', error);
