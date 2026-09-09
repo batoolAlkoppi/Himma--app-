@@ -73,7 +73,6 @@
             pointer-events: none;
         }
 
-        /* Heart color follows total attendance count: every attendance changes the heart. */
         .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
         .heart-badge.fill-0 .count-number { color: #475569; }
         .heart-badge.fill-1 svg { color: #f7b6b2; fill: #f7b6b2; }
@@ -86,21 +85,6 @@
         .heart-badge.fill-8 svg { color: #8f6b35; fill: #8f6b35; }
         .heart-badge.fill-9 svg { color: #6f4f22; fill: #6f4f22; }
         .heart-badge.fill-10 svg { color: #51391a; fill: #51391a; }
-
-        /* Beige movement / transition */
-        .beige-motion {
-            position: absolute;
-            border-radius: 999px;
-            background: rgba(175, 194, 174, 0.42);
-            filter: blur(1px);
-            pointer-events: none;
-        }
-        .beige-motion.one { width: 330px; height: 330px; top: -120px; right: -90px; animation: beigeFloatOne 8s ease-in-out infinite; }
-        .beige-motion.two { width: 250px; height: 250px; bottom: -90px; left: -70px; animation: beigeFloatTwo 10s ease-in-out infinite; }
-        .beige-motion.three { width: 150px; height: 150px; top: 42%; left: 48%; opacity: .35; animation: beigeFloatThree 7s ease-in-out infinite; }
-        @keyframes beigeFloatOne { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(-35px,28px,0) scale(1.08)} }
-        @keyframes beigeFloatTwo { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(28px,-25px,0) scale(1.1)} }
-        @keyframes beigeFloatThree { 0%,100%{transform:translate3d(-50%,-50%,0) scale(1)} 50%{transform:translate3d(-50%,-50%,0) scale(1.2)} }
 
         /* =========================
            Hِمّة — SIGNATURE SPLASH
@@ -122,23 +106,6 @@
         }
         #himma-splash.hide { opacity:0; visibility:hidden; pointer-events:none; }
 
-        .splash-decoration {
-            position:absolute;
-            pointer-events:none;
-            opacity:.75;
-        }
-        .splash-decoration.top {
-            width:270px;height:270px;right:-120px;top:-130px;
-            border-radius:50%;
-            border:1px solid rgba(44,62,53,.09);
-            box-shadow:0 0 0 18px rgba(175,194,174,.06),0 0 0 36px rgba(44,62,53,.035);
-        }
-        .splash-decoration.bottom {
-            width:220px;height:220px;left:-120px;bottom:-120px;
-            border-radius:50%;
-            border:1px solid rgba(44,62,53,.08);
-        }
-
         .splash-shell {
             position:relative;
             z-index:2;
@@ -151,7 +118,6 @@
             font-size:clamp(27px,7vw,38px);
             line-height:1.65;
             margin:0 0 15px;
-            text-shadow:0 2px 0 rgba(255,255,255,.65);
         }
         .splash-ornament {
             display:flex;
@@ -162,10 +128,7 @@
             width:72%;
         }
         .splash-ornament span { flex:1;height:1px;background:linear-gradient(90deg,transparent,#AFC2AE); }
-        .splash-ornament span:last-child { background:linear-gradient(90deg,#AFC2AE,transparent); }
-        .splash-ornament i {
-            width:7px;height:7px;border:1px solid #78867B;transform:rotate(45deg);background:#FCF7EC;
-        }
+        .splash-ornament i { width:7px;height:7px;border:1px solid #78867B;transform:rotate(45deg);background:#FCF7EC; }
 
         .splash-brand-card {
             position:relative;
@@ -177,14 +140,6 @@
             box-shadow:0 24px 60px rgba(44,62,53,.11), inset 0 1px 0 rgba(255,255,255,.9);
             backdrop-filter:blur(12px);
         }
-        .splash-brand-card::before {
-            content:"";
-            position:absolute;
-            inset:8px;
-            border-radius:24px;
-            border:1px dashed rgba(120,134,123,.22);
-            pointer-events:none;
-        }
         .splash-logo-frame {
             position:relative;
             width:128px;height:128px;
@@ -194,13 +149,6 @@
             background:#E8EFDF;
             border:1px solid #C8D6C1;
             box-shadow:0 14px 32px rgba(44,62,53,.13);
-        }
-        .splash-logo-frame::after {
-            content:"";
-            position:absolute;
-            inset:5px;
-            border:1px dashed rgba(44,62,53,.20);
-            border-radius:32px;
         }
         .splash-logo {
             position:relative;
@@ -223,7 +171,6 @@
             color:#65756B;
             font-size:12px;
             font-weight:800;
-            letter-spacing:.2px;
         }
         .splash-verse {
             margin:0 0 18px;
@@ -259,52 +206,16 @@
             font-size:15px;
             cursor:pointer;
             box-shadow:0 13px 28px rgba(31,56,47,.20);
-            transition:transform .25s ease, box-shadow .25s ease;
+            transition:transform .25s ease;
         }
-        .splash-enter-btn:hover { transform:translateY(-2px); box-shadow:0 17px 34px rgba(31,56,47,.25); }
-        .splash-enter-btn:active { transform:scale(.985); }
-        .splash-note {
-            margin:13px 0 0;
-            color:#8A948C;
-            font-size:9.5px;
-            font-weight:700;
-        }
-        @keyframes splashRise {
-            from { opacity:0; transform:translateY(22px) scale(.985); }
-            to { opacity:1; transform:translateY(0) scale(1); }
-        }
-        .splash-shell { animation:splashRise .8s cubic-bezier(.22,.8,.2,1) both; }
-        @media(max-width:480px){
-            #himma-splash{padding:15px;}
-            .splash-brand-card{padding:24px 17px 20px;border-radius:26px;}
-            .splash-logo-frame{width:112px;height:112px;border-radius:34px;}
-            .splash-title{font-size:48px;}
-            .splash-bismillah{font-size:27px;}
-            .splash-verse{font-size:15.5px;}
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .splash-shell { animation:none !important; }
-        }
+        .splash-enter-btn:hover { transform:translateY(-2px); }
 
-        /* =========================
-           Hِمّة — CLEAN PREMIUM TOP BAR
-           ========================= */
+        /* Top bar styling */
         header.glass-panel {
             background:rgba(255,255,255,.94) !important;
             backdrop-filter:blur(18px);
             border-bottom:1px solid rgba(175,194,174,.45) !important;
             box-shadow:0 5px 24px rgba(44,62,53,.06) !important;
-        }
-        .himma-topbar {
-            position:relative;
-        }
-        .himma-topbar::after {
-            content:"";
-            position:absolute;
-            left:20px;right:20px;bottom:0;
-            height:2px;
-            background:linear-gradient(90deg,transparent,#AFC2AE 18%,#2C3E35 50%,#AFC2AE 82%,transparent);
-            opacity:.65;
         }
         .himma-logo-box {
             width:42px;height:42px;
@@ -312,134 +223,28 @@
             border-radius:13px;
             background:#E8EFDF;
             border:1px solid #C8D6C1;
-            box-shadow:0 5px 14px rgba(44,62,53,.08);
         }
         .himma-logo-box img { border-radius:10px; }
-        .himma-top-title { color:#24382F !important; font-weight:900 !important; }
-        .himma-top-subtitle { color:#7A877F !important; }
-        .himma-install-btn {
-            background:#F4F0E5 !important;
-            color:#28483A !important;
-            border:1px solid #DDD4C2 !important;
-            border-radius:13px !important;
-        }
-        .himma-install-btn:hover { background:#EAF0E3 !important; }
-
-        /* Keep the main identity green, not muddy olive. */
         .text-forest { color:#28483A !important; }
         .bg-forest { background-color:#28483A !important; }
-        .selection\:text-forest::selection { color:#28483A; }
+
         .success-toast {
             position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); z-index: 100000;
             background:#2C3E35; color:#FCF7EC; padding:11px 18px; border-radius:999px; font-weight:800; font-size:13px;
             box-shadow:0 12px 30px rgba(44,62,53,.2); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
         }
         .success-toast.show { opacity:1; transform:translate(-50%,0); }
-        @media (prefers-reduced-motion: reduce) {
-            .beige-motion,.splash-logo,.splash-line { animation:none !important; }
-        }
-
 
         .five-week-star {
             display: inline-block;
             margin-right: 5px;
             color: #D4A72C;
             font-size: 15px;
-            line-height: 1;
             vertical-align: middle;
-            animation: starAppear .45s ease both;
-        }
-        @keyframes starAppear {
-            from { opacity: 0; transform: scale(.5) rotate(-15deg); }
-            to { opacity: 1; transform: scale(1) rotate(0); }
-        }
-
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: #FCF7EC; }
-        ::-webkit-scrollbar-thumb { background: #AFC2AE; border-radius: 4px; }
-        
-        [contenteditable="true"]:hover {
-            background-color: rgba(213, 228, 207, 0.3);
-            border-radius: 4px;
-            cursor: text;
-        }
-    
-        /* =========================
-           Hِمّة PREMIUM VISUAL LAYER
-           ========================= */
-        body {
-            background:
-                radial-gradient(circle at 8% 0%, rgba(213,228,207,.72), transparent 28%),
-                radial-gradient(circle at 92% 12%, rgba(175,194,174,.42), transparent 24%),
-                #FCF7EC;
-        }
-        body::before {
-            content:"";
-            position:fixed;
-            inset:0;
-            pointer-events:none;
-            z-index:-1;
-            opacity:.45;
-            background-image:
-                radial-gradient(rgba(44,62,53,.055) .7px, transparent .7px);
-            background-size:18px 18px;
-            mask-image:linear-gradient(to bottom, black, transparent 82%);
-        }
-        .glass-panel {
-            background:rgba(255,255,255,.84) !important;
-            border:1px solid rgba(120,134,123,.22) !important;
-            box-shadow:0 12px 34px rgba(44,62,53,.07), inset 0 1px 0 rgba(255,255,255,.75) !important;
-        }
-        header.glass-panel {
-            background:rgba(252,247,236,.88) !important;
-            backdrop-filter:blur(18px);
-            box-shadow:0 8px 30px rgba(44,62,53,.08) !important;
-        }
-        button {
-            -webkit-tap-highlight-color:transparent;
-        }
-        .heart-badge {
-            width:34px;
-            height:34px;
-            filter:drop-shadow(0 5px 8px rgba(44,62,53,.10));
-        }
-        .heart-badge svg {
-            width:34px;
-            height:34px;
-        }
-        .heart-badge .count-number {
-            inset:0;
-            width:100%;
-            height:100%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            top:auto;
-            left:auto;
-            transform:none;
-            font-family:'Cairo',sans-serif;
-            font-size:10px;
-            font-weight:900;
-            line-height:1;
-            text-align:center;
-            padding:0;
-            box-sizing:border-box;
-        }
-        .heart-badge:active { transform:scale(.91); }
-        .heart-badge svg { transition:fill .28s ease,color .28s ease,transform .28s ease; }
-        .heart-badge:hover svg { transform:scale(1.06); }
-
-        /* Elegant attendance table */
-        #student-tbody tr {
-            height:48px !important;
-            transition:background .2s ease, transform .2s ease;
-        }
-        #student-tbody tr:hover {
-            background:rgba(213,228,207,.22);
         }
 
         /* =========================
-           PREMIUM A4 EXPORT — FINAL
+           PREMIUM A4 EXPORT WITH QURAN BACKGROUND
            ========================= */
         #export-card-target {
             width:794px !important;
@@ -448,155 +253,116 @@
             padding:0 !important;
             overflow:hidden !important;
             position:relative !important;
-            background:#FBF7EE !important;
+            background-color: #FBF7EE !important;
+            /* وضع خلفية المصحف التي أرسلتِها في رأس التقرير */
+            background-image: url('c7c8651516820500529f58e4173aea38_c5ec63.jpg') !important;
+            background-size: 794px auto !important;
+            background-repeat: no-repeat !important;
+            background-position: top center !important;
             color:#24372E !important;
             box-sizing:border-box !important;
         }
-        #export-card-target::before {
-            content:"";
-            position:absolute;
-            width:520px;height:520px;
-            top:-310px;right:-170px;
-            border-radius:50%;
-            border:1px solid rgba(175,194,174,.38);
-            box-shadow:0 0 0 18px rgba(175,194,174,.10),0 0 0 42px rgba(44,62,53,.035);
-        }
-        #export-card-target::after {
-            content:"";
-            position:absolute;
-            width:330px;height:330px;
-            bottom:-245px;left:-150px;
-            border-radius:50%;
-            border:1px solid rgba(175,194,174,.32);
-            box-shadow:0 0 0 15px rgba(175,194,174,.08);
-        }
+        
         #export-card-target .export-frame {
             position:absolute;inset:13px;
-            border:1.5px solid #AFC2AE;border-radius:24px;
-            pointer-events:none;z-index:20;
+            border:1.5px solid rgba(175,194,174,0.6); border-radius:24px;
+            pointer-events:none; z-index:20;
         }
-        #export-card-target .export-frame-inner {
-            position:absolute;inset:19px;
-            border:1px dashed rgba(120,134,123,.48);border-radius:19px;
-            pointer-events:none;z-index:20;
-        }
-        .export-hero {
-            position:relative;margin:28px 28px 0;height:184px;
-            border-radius:25px;overflow:hidden;
-            background:linear-gradient(135deg,#1F332A 0%,#2C493C 52%,#3D5B4B 100%);
-            color:#FCF7EC;
-            box-shadow:0 16px 34px rgba(31,51,42,.18);
-            z-index:2;
-        }
-        .export-hero::before {
-            content:"";position:absolute;width:310px;height:310px;right:-115px;top:-180px;
-            border-radius:50%;border:1px solid rgba(213,228,207,.25);
-            box-shadow:0 0 0 18px rgba(213,228,207,.06),0 0 0 38px rgba(213,228,207,.035);
-        }
-        .export-hero::after {
-            content:"";position:absolute;width:190px;height:190px;left:-75px;bottom:-125px;
-            border-radius:50%;background:rgba(252,247,236,.07);
-        }
+
         .export-hero-content {
-            position:relative;z-index:3;height:100%;padding:22px 25px;
-            display:flex;align-items:center;justify-content:space-between;gap:22px;box-sizing:border-box;
+            position:relative; z-index:3; padding:35px 35px 20px;
+            display:flex; align-items:center; justify-content:space-between; gap:22px; box-sizing:border-box;
         }
-        .export-brand {display:flex;align-items:center;gap:17px;min-width:0;}
+        .export-brand { display:flex; align-items:center; gap:17px; min-width:0; }
         .export-logo {
-            width:82px;height:82px;border-radius:22px;object-fit:cover;
-            background:#FCF7EC;padding:5px;box-sizing:border-box;
-            box-shadow:0 10px 25px rgba(0,0,0,.20);
-            flex:none;
+            width:72px; height:72px; border-radius:20px; object-fit:cover;
+            background:#FCF7EC; padding:4px; box-sizing:border-box;
+            box-shadow:0 8px 20px rgba(0,0,0,0.12);
         }
         .export-bismillah {
-            font-family:'Amiri',serif;font-size:25px;font-weight:700;line-height:1.45;
-            margin:0 0 5px;color:#FCF7EC;white-space:nowrap;
+            font-family:'Amiri',serif; font-size:22px; font-weight:700; line-height:1.3;
+            margin:0 0 3px; color:#1F2E27;
         }
         .export-title {
-            font-family:'Amiri',serif;font-size:34px;font-weight:700;line-height:1.15;
-            margin:0;color:#D5E4CF;
+            font-family:'Amiri',serif; font-size:32px; font-weight:700; line-height:1.1;
+            margin:0; color:#1F2E27;
         }
         .export-meta {
-            text-align:right;min-width:145px;direction:rtl;
-            padding-right:16px;border-right:1px solid rgba(213,228,207,.28);
+            text-align:right; min-width:145px; direction:rtl;
+            padding-right:16px; border-right:1.5px solid rgba(31,46,39,0.2);
+            background: rgba(255,255,255,0.75);
+            padding: 10px 14px;
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
         }
-        .export-meta-label {font-size:9px;color:#C9D8C5;font-weight:700;margin-bottom:1px;}
-        .export-meta-value {font-size:12px;font-weight:900;color:#fff;margin-bottom:8px;}
+        .export-meta-label { font-size:9.5px; color:#55635B; font-weight:700; margin-bottom:1px; }
+        .export-meta-value { font-size:12px; font-weight:900; color:#1F2E27; margin-bottom:6px; }
+        .export-meta-value:last-child { margin-bottom:0; }
+
         .export-circle-heading {
-            margin:17px 28px 10px;display:flex;align-items:end;justify-content:space-between;
-            direction:rtl;position:relative;z-index:2;
+            margin: 20px 35px 12px; display:flex; align-items:end; justify-content:space-between;
+            direction:rtl; position:relative; z-index:2;
+            background: rgba(255,255,255,0.85);
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(175,194,174,0.4);
         }
-        .export-circle-name {font-family:'Amiri',serif;font-size:27px;font-weight:700;color:#24372E;line-height:1.1;}
-        .export-circle-sub {font-size:9px;color:#829086;font-weight:800;margin-top:4px;}
+        .export-circle-name { font-family:'Amiri',serif; font-size:24px; font-weight:700; color:#1F2E27; line-height:1.1; }
+        .export-circle-sub { font-size:10px; color:#65756B; font-weight:800; margin-top:2px; }
+
         .export-summary {
-            margin:0 28px 15px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative;z-index:2;
+            margin:0 35px 14px; display:grid; grid-template-columns:repeat(3,1fr); gap:10px; position:relative; z-index:2;
         }
         .export-stat {
-            min-height:64px;box-sizing:border-box;border-radius:15px;padding:9px 12px;
-            background:rgba(255,255,255,.88);border:1px solid #D5E4CF;
-            box-shadow:0 8px 20px rgba(44,62,53,.055);
-            display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+            min-height:56px; box-sizing:border-box; border-radius:14px; padding:8px 12px;
+            background:rgba(255,255,255,0.92); border:1px solid rgba(175,194,174,0.5);
+            box-shadow:0 4px 15px rgba(44,62,53,0.04);
+            display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
         }
-        .export-stat strong {font-size:23px;line-height:1.05;color:#2C3E35;}
-        .export-stat:nth-child(1) strong {color:#16795C;}
-        .export-stat:nth-child(2) strong {color:#B24C4C;}
-        .export-stat:nth-child(3) strong {color:#7B6738;}
-        .export-stat span {font-size:9px;color:#78867B;font-weight:800;margin-top:4px;}
+        .export-stat strong { font-size:20px; line-height:1.05; color:#1F2E27; }
+        .export-stat span { font-size:9.5px; color:#65756B; font-weight:800; margin-top:3px; }
+
         .export-section-title {
-            margin:0 28px 8px;display:flex;align-items:center;gap:8px;color:#2C3E35;
-            font-size:11px;font-weight:900;position:relative;z-index:2;
+            margin:0 35px 8px; display:flex; align-items:center; gap:8px; color:#1F2E27;
+            font-size:11px; font-weight:900; position:relative; z-index:2;
         }
-        .export-section-title::before {content:"";width:5px;height:17px;border-radius:8px;background:#2C3E35;}
+
+        /* الجداول الشفافة تحت خلفية المصحف */
         #export-tables-container {
-            margin:0 28px !important;gap:10px !important;display:flex !important;
-            align-items:flex-start !important;position:relative;z-index:2;
+            margin:0 35px !important; gap:12px !important; display:flex !important;
+            align-items:flex-start !important; position:relative; z-index:2;
         }
         .export-table-wrap {
-            margin:0 !important;border:1px solid #C6D5C1;border-radius:15px;overflow:hidden;
-            background:#fff;box-shadow:0 9px 22px rgba(44,62,53,.055);flex:1;min-width:0;
+            margin:0 !important; border:1px solid rgba(175,194,174,0.6); border-radius:14px; overflow:hidden;
+            background: rgba(255, 255, 255, 0.88) !important; backdrop-filter: blur(8px);
+            box-shadow:0 8px 24px rgba(44,62,53,0.06); flex:1; min-width:0;
         }
-        #export-tables-container table {width:100% !important;border:0 !important;background:#fff !important;}
+        #export-tables-container table { width:100% !important; border:0 !important; background:transparent !important; }
         #export-tables-container th {
-            background:#DDE8D7 !important;color:#2C3E35 !important;font-size:9.5px !important;
-            padding:7px 6px !important;font-weight:900 !important;
+            background: rgba(213,228,207,0.85) !important; color:#1F2E27 !important; font-size:10px !important;
+            padding:7px 8px !important; font-weight:900 !important;
         }
-        #export-tables-container td {font-size:10.5px !important;}
-        .export-empty-space {height:0;}
+        #export-tables-container td { font-size:11px !important; }
+
+        /* التذييل وتوقيع بتول الكبي */
         .export-signature {
-            position:absolute;left:0;right:0;bottom:31px;text-align:center;direction:ltr;
-            font-family:'Dancing Script',cursive;font-size:20px;color:#566A5D;font-weight:700;z-index:5;
+            position:absolute; left:0; right:0; bottom:32px; text-align:center; direction:ltr;
+            font-family:'Dancing Script',cursive; font-size:22px; color:#2C3E35; font-weight:700; z-index:5;
         }
         .export-bottom-line {
-            position:absolute;left:50%;bottom:24px;transform:translateX(-50%);
-            width:78px;height:2px;border-radius:4px;background:#AFC2AE;z-index:5;
+            position:absolute; left:50%; bottom:26px; transform:translateX(-50%);
+            width:90px; height:2px; border-radius:4px; background:#AFC2AE; z-index:5;
         }
         .export-footer-note {
-            position:absolute;right:29px;bottom:29px;direction:rtl;font-size:8.5px;
-            color:#9BAA9E;font-weight:700;z-index:5;
+            position:absolute; right:35px; bottom:28px; direction:rtl; font-size:9px;
+            color:#78867B; font-weight:700; z-index:5;
         }
-        @media(max-width:640px){
-            .export-hero-content{padding:20px 21px}.export-bismillah{font-size:21px}.export-title{font-size:29px}
-        }
-
-        /* Save feedback */
-        .success-toast {
-            padding:12px 20px !important;
-            box-shadow:0 14px 36px rgba(44,62,53,.22) !important;
-        }
-        @media(max-width:640px){
-            .export-hero-content { padding:22px 22px; }
-            .export-bismillah { font-size:22px; }
-            .export-title { font-size:27px; }
-            .export-meta { min-width:115px; }
-        }
-
     </style>
 </head>
 <body class="h-full flex flex-col min-h-screen justify-between selection:bg-sage selection:text-forest">
+    
     <!-- HIMMA SIGNATURE SPLASH SCREEN -->
     <div id="himma-splash" aria-label="هِمّة">
-        <div class="splash-decoration top"></div>
-        <div class="splash-decoration bottom"></div>
         <div class="splash-shell">
             <div class="splash-bismillah">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</div>
             <div class="splash-ornament"><span></span><i></i><span></span></div>
@@ -609,10 +375,10 @@
                 <div class="splash-verse">﴿ وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا ۚ وَإِنَّ اللَّهَ لَمَعَ الْمُحْسِنِينَ ﴾</div>
                 <div class="splash-welcome-card">أهلًا وسهلًا بكم في هِمّة</div>
                 <button id="splash-enter-btn" class="splash-enter-btn" type="button">دخول إلى هِمّة <span style="font-size:18px;vertical-align:-1px;">←</span></button>
-                <div class="splash-note">نسأل الله أن يجعلها خُطىً مباركة في طريق القرآن</div>
             </div>
         </div>
     </div>
+    
     <div id="success-toast" class="success-toast">تم حفظ صورة الحضور بنجاح ✨</div>
 
     <!-- HEADER -->
@@ -623,13 +389,13 @@
                     <img src="icon.png" alt="Logo" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h1 class="text-lg leading-none himma-top-title">هِمّة</h1>
-                    <span class="text-[11px] font-medium himma-top-subtitle">إدارة حلقات القرآن الكريم</span>
+                    <h1 class="text-lg leading-none font-bold text-forest">هِمّة</h1>
+                    <span class="text-[11px] font-medium text-slate">إدارة حلقات القرآن الكريم</span>
                 </div>
             </div>
             
             <div id="pwa-install-container" class="hidden">
-                <button id="pwa-install-btn" class="himma-install-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <button id="pwa-install-btn" class="bg-cream text-forest border border-olive/50 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
                     <i data-lucide="download" class="w-3.5 h-3.5"></i> تثبيت التطبيق
                 </button>
             </div>
@@ -639,10 +405,9 @@
     <!-- MAIN CONTAINER -->
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-grow w-full">
 
-        <!-- SELECTOR BAR & MINI INPUTS -->
         <div class="glass-panel p-3 rounded-2xl mb-4 flex flex-col md:flex-row items-center justify-between gap-3 border border-olive/40 shadow-sm">
             <div class="flex items-center gap-2 w-full md:w-auto">
-                <select id="circle-selector" onchange="changeActiveCircle(this.value)" class="w-full md:w-48 bg-cream border border-olive/40 rounded-lg px-2.5 py-1.5 text-xs font-bold text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                <select id="circle-selector" onchange="changeActiveCircle(this.value)" class="w-full md:w-48 bg-cream border border-olive/40 rounded-lg px-2.5 py-1.5 text-xs font-bold text-forest focus:outline-none">
                 </select>
                 <button onclick="createNewCirclePrompt()" class="bg-forest text-cream px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1 shrink-0">
                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> جديدة
@@ -650,13 +415,12 @@
             </div>
 
             <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
-                <input type="text" id="input-mosque" placeholder="المسجد" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
-                <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-32 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
-                <input type="text" id="input-teacher" placeholder="المعلمة" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                <input type="text" id="input-mosque" placeholder="المسجد" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none">
+                <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-32 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none">
+                <input type="text" id="input-teacher" placeholder="المعلمة" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none">
             </div>
         </div>
 
-        <!-- ATTENDANCE CIRCLE & STATS WIDGET -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
             <div class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -669,9 +433,6 @@
                     </div>
                     <div>
                         <span class="block text-xs font-bold text-slate">نسبة الحضور</span>
-                        <div class="flex items-center gap-1 mt-0.5 text-[10px] text-slate font-semibold">
-                            <i data-lucide="trending-up" class="w-3 h-3 text-emerald-600"></i> خط حيوي
-                        </div>
                     </div>
                 </div>
                 <div class="text-left text-xs space-y-0.5 font-bold pl-2 border-r border-olive/20">
@@ -682,7 +443,7 @@
 
             <div class="md:col-span-2 glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center">
                 <form onsubmit="addStudent(event)" class="flex gap-2 w-full">
-                    <input type="text" id="input-student-name" placeholder="أدخلي اسم الطالبة الجديدة..." required class="flex-grow bg-cream border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                    <input type="text" id="input-student-name" placeholder="أدخلي اسم الطالبة الجديدة..." required class="flex-grow bg-cream border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none">
                     <button type="submit" class="bg-forest text-cream font-bold px-4 py-1.5 rounded-xl hover:bg-forest/90 transition text-xs shadow-sm shrink-0">
                         إضافة طالبة
                     </button>
@@ -690,12 +451,11 @@
             </div>
         </div>
 
-        <!-- TABLE SECTION -->
         <section class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/30 mb-4">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mb-3">
-                <div class="text-xs font-bold text-forest">سجل الحضور (<span id="student-count">0</span> طالبة) - مرتب أبجدياً</div>
+                <div class="text-xs font-bold text-forest">سجل الحضور (<span id="student-count">0</span> طالبة)</div>
                 <div class="relative w-full sm:w-56">
-                    <input type="text" id="search-student-input" oninput="renderStudentsTable()" placeholder="بحث..." class="w-full bg-cream border border-olive/30 rounded-lg pr-7 pl-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                    <input type="text" id="search-student-input" oninput="renderStudentsTable()" placeholder="بحث..." class="w-full bg-cream border border-olive/30 rounded-lg pr-7 pl-2.5 py-1 text-xs text-forest focus:outline-none">
                     <i data-lucide="search" class="w-3.5 h-3.5 text-slate absolute right-2 top-2"></i>
                 </div>
             </div>
@@ -705,7 +465,7 @@
                     <thead class="sticky top-0 bg-sage/80 backdrop-blur-sm z-10">
                         <tr class="text-forest font-bold border-b border-olive/30">
                             <th class="p-2.5 border-l border-olive/20 w-2/5">الاسم (انقري للتعديل)</th>
-                            <th class="p-2.5 text-center border-l border-olive/20 w-1v5">حضور اليوم</th>
+                            <th class="p-2.5 text-center border-l border-olive/20 w-1/5">حضور اليوم</th>
                             <th class="p-2.5 text-center border-l border-olive/20 w-1/6">التتابع</th>
                             <th class="p-2.5 text-center border-l border-olive/20 w-1/6">مجموع الحضور</th>
                             <th class="p-2.5 text-center w-1/12">حذف</th>
@@ -716,37 +476,33 @@
             </div>
         </section>
 
-        <!-- SEPARATE EXTERNAL EXPORT BUTTON (OUTSIDE FRAME) -->
         <div class="flex justify-center mb-6">
             <button type="button" onclick="exportAttendanceCard()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-6 py-2.5 rounded-xl transition text-sm flex items-center gap-2 shadow-lg">
                 <i data-lucide="image" class="w-4 h-4"></i> حفظ تقرير الحضور كصورة A4
             </button>
         </div>
 
-        <!-- PREMIUM A4 EXPORT TARGET -->
+        <!-- EXPORT TARGET (PREMIUM A4 WITH QURAN BACKGROUND & TRANSPARENT TABLES) -->
         <div style="position:fixed;left:-12000px;top:0;width:794px;height:1123px;overflow:hidden;pointer-events:none;visibility:hidden;">
             <div id="export-card-target">
                 <div class="export-frame"></div>
-                <div class="export-frame-inner"></div>
 
-                <div class="export-hero">
-                    <div class="export-hero-content">
-                        <div class="export-brand">
-                            <img src="icon.png" alt="هِمّة" class="export-logo">
-                            <div>
-                                <div class="export-bismillah">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</div>
-                                <h2 class="export-title">هِمّة</h2>
-                                <div style="font-size:10px;color:#E3EBDd;font-weight:700;margin-top:5px;">نظام إدارة حلقات القرآن الكريم</div>
-                            </div>
+                <div class="export-hero-content">
+                    <div class="export-brand">
+                        <img src="icon.png" alt="هِمّة" class="export-logo">
+                        <div>
+                            <div class="export-bismillah">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</div>
+                            <h2 class="export-title">هِمّة</h2>
+                            <div style="font-size:10px;color:#3C4D44;font-weight:700;margin-top:3px;">نظام إدارة حلقات القرآن الكريم</div>
                         </div>
-                        <div class="export-meta">
-                            <div class="export-meta-label">المسجد</div>
-                            <div class="export-meta-value" id="card-display-mosque">--</div>
-                            <div class="export-meta-label">المعلمة</div>
-                            <div class="export-meta-value" id="card-display-teacher">--</div>
-                            <div class="export-meta-label">التاريخ</div>
-                            <div class="export-meta-value" id="card-export-date">--</div>
-                        </div>
+                    </div>
+                    <div class="export-meta">
+                        <div class="export-meta-label">المسجد</div>
+                        <div class="export-meta-value" id="card-display-mosque">--</div>
+                        <div class="export-meta-label">المعلمة</div>
+                        <div class="export-meta-value" id="card-display-teacher">--</div>
+                        <div class="export-meta-label">التاريخ</div>
+                        <div class="export-meta-value" id="card-export-date">--</div>
                     </div>
                 </div>
 
@@ -755,7 +511,7 @@
                         <div class="export-circle-name">تقرير حضور حلقة <span id="card-display-circle">--</span></div>
                         <div class="export-circle-sub">سجل الحضور الأسبوعي للطالبات</div>
                     </div>
-                    <div style="font-family:'Amiri',serif;font-size:13px;color:#78867B;">حضورٌ يرفع الهمّة</div>
+                    <div style="font-family:'Amiri',serif;font-size:13px;color:#3C4D44;font-weight:700;">حضورٌ يرفع الهمّة</div>
                 </div>
 
                 <div class="export-summary">
@@ -785,7 +541,7 @@
     </main>
 
     <footer class="text-center pb-4 pt-1">
-        <div class="text-sm font-bold text-slate" style="font-family:'Dancing Script',cursive;">Developed by Batool</div>
+        <div class="text-sm font-bold text-slate" style="font-family:'Dancing Script',cursive;">Developed by Batool Al-Kubbi</div>
     </footer>
 
     <script>
@@ -817,43 +573,15 @@
             showInstallButton();
         });
 
-        window.addEventListener('appinstalled', () => {
-            deferredPrompt = null;
-            document.getElementById('pwa-install-container')?.classList.add('hidden');
-        });
-
-        async function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                if (outcome === 'accepted') {
-                    document.getElementById('pwa-install-container')?.classList.add('hidden');
-                }
-                return;
-            }
-
-            // On browsers that don't expose beforeinstallprompt (notably iOS/Safari),
-            // give a clear manual-install instruction instead of making the button disappear.
-            alert("لتثبيت هِمّة: من قائمة المتصفح اختاري «إضافة إلى الشاشة الرئيسية» أو «تثبيت التطبيق».");
-        }
-
         document.addEventListener('DOMContentLoaded', async () => {
             loadData();
             lucide.createIcons();
             showInstallButton();
 
-            // Required for PWA installation on GitHub Pages.
             if ('serviceWorker' in navigator) {
-                try {
-                    await navigator.serviceWorker.register('./sw.js', { scope: './' });
-                    console.log('هِمّة: Service Worker registered');
-                } catch (error) {
-                    console.error('هِمّة: Service Worker registration failed', error);
-                }
+                try { await navigator.serviceWorker.register('./sw.js', { scope: './' }); } catch (error) {}
             }
 
-            // Splash screen stays until the user explicitly enters.
             document.getElementById('splash-enter-btn')?.addEventListener('click', () => {
                 const splash = document.getElementById('himma-splash');
                 splash?.classList.add('hide');
@@ -861,7 +589,14 @@
             });
         });
 
-        document.getElementById('pwa-install-btn')?.addEventListener('click', installApp);
+        document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt = null;
+            } else {
+                alert("لتثبيت هِمّة: من قائمة المتصفح اختاري «إضافة إلى الشاشة الرئيسية».");
+            }
+        });
 
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
@@ -877,7 +612,6 @@
         }
 
         function getActiveCircle() {
-            if (!appData.circles || appData.circles.length === 0) return null;
             return appData.circles.find(c => c.id === appData.activeCircleId) || appData.circles[0];
         }
 
@@ -885,7 +619,6 @@
             const circle = getActiveCircle();
             const selector = document.getElementById('circle-selector');
             selector.innerHTML = '';
-
             if (!circle) return;
 
             appData.circles.forEach(c => {
@@ -958,66 +691,37 @@
             
             if (index > -1) {
                 student.history.splice(index, 1);
-                if (student.attendanceCountOverride !== undefined && student.attendanceCountOverride !== null) {
-                    student.attendanceCountOverride = Math.max(0, getAttendanceCount(student) - 1);
-                }
             } else {
                 student.history.push(today);
                 student.history.sort();
-                if (student.attendanceCountOverride !== undefined && student.attendanceCountOverride !== null) {
-                    student.attendanceCountOverride = getAttendanceCount(student) + 1;
-                }
             }
             saveData();
         }
 
         function getWeeklyStreak(student) {
             if (!student?.history || student.history.length === 0) return 0;
-
-            // Attendance happens once per week, so streaks are calculated by consecutive Mondays.
             const weeks = [...new Set(student.history.map(dateStr => {
                 const d = new Date(dateStr + 'T00:00:00');
-                const day = d.getDay(); // 0 Sunday ... 6 Saturday
+                const day = d.getDay();
                 const diffToMonday = day === 0 ? 6 : day - 1;
                 d.setDate(d.getDate() - diffToMonday);
                 return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
             }))].sort();
 
             if (!weeks.length) return 0;
-
             let streak = 1;
             for (let i = weeks.length - 1; i > 0; i--) {
                 const current = new Date(weeks[i] + 'T00:00:00');
                 const previous = new Date(weeks[i - 1] + 'T00:00:00');
-                const diffWeeks = Math.round((current - previous) / (7 * 24 * 60 * 60 * 1000));
-                if (diffWeeks === 1) streak++;
+                if (Math.round((current - previous) / (7 * 24 * 60 * 60 * 1000)) === 1) streak++;
                 else break;
             }
             return streak;
         }
 
         function getStreak(student) {
-            // Keep manual streak editing for the displayed "التتابع" value.
-            if (student?.manualStreak !== undefined && student.manualStreak !== null) {
-                return parseInt(student.manualStreak) || 0;
-            }
+            if (student?.manualStreak !== undefined && student.manualStreak !== null) return parseInt(student.manualStreak) || 0;
             return getWeeklyStreak(student);
-        }
-
-        function editStudentStreak(id) {
-            const circle = getActiveCircle();
-            const student = circle.students.find(s => s.id === id);
-            if(student) {
-                let current = getStreak(student);
-                let val = prompt("أدخلي رقم التتابع:", current);
-                if (val !== null && val.trim() !== "" && !isNaN(val)) {
-                    student.manualStreak = parseInt(val);
-                    saveData();
-                } else if (val === "") {
-                    student.manualStreak = null; 
-                    saveData();
-                }
-            }
         }
 
         function getAttendanceCount(student) {
@@ -1028,34 +732,24 @@
         }
 
         function getHeartColorClass(attendanceCount) {
-            const fill = Math.min(Math.max(parseInt(attendanceCount) || 0, 0), 10);
-            return `fill-${fill}`;
+            return `fill-${Math.min(Math.max(parseInt(attendanceCount) || 0, 0), 10)}`;
         }
 
         function editStudentAttendanceCount(id) {
             const circle = getActiveCircle();
             const student = circle?.students.find(s => s.id === id);
             if (!student) return;
-            const current = getAttendanceCount(student);
-            const val = prompt("عدّلي مجموع الحضور لهذه الطالبة:", current);
-            if (val === null) return;
-            if (val.trim() === '' || isNaN(val) || Number(val) < 0) {
-                alert('أدخلي رقمًا صحيحًا للحضور.');
-                return;
-            }
+            const val = prompt("عدّلي مجموع الحضور لهذه الطالبة:", getAttendanceCount(student));
+            if (val === null || val.trim() === '' || isNaN(val)) return;
             const parsed = Math.floor(Number(val));
-            const actual = Array.isArray(student.history) ? student.history.length : 0;
-            student.attendanceCountOverride = parsed === actual ? null : parsed;
+            student.attendanceCountOverride = parsed === student.history.length ? null : parsed;
             saveData();
         }
 
         function renderHeartBadgeHTML(attendanceCount, studentId) {
-            const colorClass = getHeartColorClass(attendanceCount);
             return `
-                <div class="heart-badge ${colorClass}" onclick="editStudentAttendanceCount('${studentId}')" title="اضغطي لتعديل مجموع الحضور">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
+                <div class="heart-badge ${getHeartColorClass(attendanceCount)}" onclick="editStudentAttendanceCount('${studentId}')" title="اضغطي لتعديل الحضور">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     <span class="count-number">${attendanceCount}</span>
                 </div>
             `;
@@ -1069,14 +763,10 @@
 
             const today = getTodayDateStr();
             const searchQuery = (document.getElementById('search-student-input')?.value || '').trim().toLowerCase();
-            
             let filtered = circle.students.filter(s => s.name.toLowerCase().includes(searchQuery));
             filtered.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
 
-            let presentCount = 0;
-            circle.students.forEach(s => {
-                if(s.history.includes(today)) presentCount++;
-            });
+            let presentCount = circle.students.filter(s => s.history.includes(today)).length;
             let absentCount = circle.students.length - presentCount;
             let percent = circle.students.length > 0 ? Math.round((presentCount / circle.students.length) * 100) : 0;
 
@@ -1092,12 +782,9 @@
 
             filtered.forEach(student => {
                 const isPresent = student.history.includes(today);
-                const streak = getStreak(student);
                 const weeklyStreak = getWeeklyStreak(student);
-                const totalAttendanceCount = getAttendanceCount(student);
-                const starHTML = weeklyStreak >= 5
-                    ? '<span class="five-week-star" title="٥ حضورات متتالية أسبوعيًا">★</span>'
-                    : '';
+                const totalCount = getAttendanceCount(student);
+                const starHTML = weeklyStreak >= 5 ? '<span class="five-week-star">★</span>' : '';
 
                 tbody.innerHTML += `
                     <tr class="hover:bg-sage/10 transition border-b border-olive/10">
@@ -1106,19 +793,13 @@
                             ${starHTML}
                         </td>
                         <td class="p-2 text-center border-l border-olive/20">
-                            <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1 rounded-md text-[11px] font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-cream text-slate border border-olive/30 hover:bg-sage/40'}">
+                            <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1 rounded-md text-[11px] font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-cream text-slate border border-olive/30'}">
                                 ${isPresent ? '✓ حاضرة' : 'غائبة'}
                             </button>
                         </td>
-                        <td class="p-2 text-center border-l border-olive/20">
-                            ${renderHeartBadgeHTML(totalAttendanceCount, student.id)}
-                        </td>
-                        <td class="p-2 text-center font-bold text-forest border-l border-olive/20">
-                            ${totalAttendanceCount}
-                        </td>
-                        <td class="p-2 text-center">
-                            <button onclick="deleteStudent('${student.id}')" class="text-red-400 hover:text-red-600 p-1 transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-                        </td>
+                        <td class="p-2 text-center border-l border-olive/20">${renderHeartBadgeHTML(totalCount, student.id)}</td>
+                        <td class="p-2 text-center font-bold text-forest border-l border-olive/20">${totalCount}</td>
+                        <td class="p-2 text-center"><button onclick="deleteStudent('${student.id}')" class="text-red-400 hover:text-red-600 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td>
                     </tr>
                 `;
             });
@@ -1135,46 +816,37 @@
         function buildExportTableHTML(studentsSubset, today) {
             const rows = studentsSubset.map((s, idx) => {
                 const isPresent = Array.isArray(s.history) && s.history.includes(today);
-                const weeklyStreak = getWeeklyStreak(s);
-                const totalAttendanceCount = getAttendanceCount(s);
+                const totalCount = getAttendanceCount(s);
                 const heartColors = ['#CBD5E1','#F7B6B2','#F28F8A','#E96F6A','#D94F4A','#B8322D','#8F2522','#6F1D1B','#8F6B35','#6F4F22','#51391A'];
-                const hexColor = heartColors[Math.min(totalAttendanceCount, 10)];
-                const textColor = totalAttendanceCount === 0 ? '#475569' : '#FFFFFF';
-                const star = weeklyStreak >= 5
-                    ? '<span style="display:inline-block;color:#C79B32;font-size:13px;margin-left:5px;vertical-align:middle;">★</span>'
-                    : '';
+                const hexColor = heartColors[Math.min(totalCount, 10)];
+                const weeklyStreak = getWeeklyStreak(s);
+                const star = weeklyStreak >= 5 ? '<span style="color:#C79B32;font-size:12px;margin-right:4px;">★</span>' : '';
 
                 return `
-                    <tr style="height:28px;border-bottom:1px solid #E2E9DF;background:${idx % 2 === 0 ? '#FFFFFF' : '#FAF7EF'};">
-                        <td style="padding:5px 8px;font-weight:800;font-size:11px;color:#24372E;width:48%;border-left:1px solid #E2E9DF;">
+                    <tr style="height:28px;border-bottom:1px solid rgba(175,194,174,0.3);background:${idx % 2 === 0 ? 'rgba(255,255,255,0.9)' : 'rgba(250,247,239,0.85)'};">
+                        <td style="padding:5px 8px;font-weight:800;font-size:11px;color:#1F2E27;width:48%;border-left:1px solid rgba(175,194,174,0.3);">
                             ${s.name}${star}
                         </td>
-                        <td style="padding:3px;text-align:center;width:19%;border-left:1px solid #E2E9DF;">
-                            <div style="position:relative;display:inline-flex;width:23px;height:23px;align-items:center;justify-content:center;vertical-align:middle;">
-                                <svg viewBox="0 0 24 24" style="position:absolute;inset:0;width:23px;height:23px;color:${hexColor};fill:currentColor;">
-                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                </svg>
-                                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cairo',sans-serif;font-size:8.5px;font-weight:900;line-height:1;color:${textColor};text-align:center;">${totalAttendanceCount}</span>
+                        <td style="padding:3px;text-align:center;width:19%;border-left:1px solid rgba(175,194,174,0.3);">
+                            <div style="position:relative;display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;vertical-align:middle;">
+                                <svg viewBox="0 0 24 24" style="position:absolute;inset:0;width:22px;height:22px;color:${hexColor};fill:currentColor;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:900;color:${totalCount===0?'#475569':'#FFF'};">${totalCount}</span>
                             </div>
                         </td>
-                        <td style="padding:5px 4px;text-align:center;width:16%;border-left:1px solid #E2E9DF;color:#2C3E35;font-size:10px;font-weight:900;">
-                            ${weeklyStreak}
-                        </td>
-                        <td style="padding:5px 4px;text-align:center;width:17%;font-size:12px;font-weight:900;color:${isPresent ? '#087A5B' : '#B14A4A'};">
-                            ${isPresent ? '✓' : '—'}
-                        </td>
+                        <td style="padding:5px 4px;text-align:center;width:16%;border-left:1px solid rgba(175,194,174,0.3);font-weight:900;font-size:10px;">${weeklyStreak}</td>
+                        <td style="padding:5px 4px;text-align:center;width:17%;font-size:12px;font-weight:900;color:${isPresent?'#087A5B':'#B14A4A'};">${isPresent ? '✓' : '—'}</td>
                     </tr>
                 `;
             }).join('');
 
             return `
-                <div class="export-table-wrap ${studentsSubset.length > 24 ? 'two' : ''}">
+                <div class="export-table-wrap">
                     <table style="width:100%;border-collapse:collapse;table-layout:fixed;text-align:right;direction:rtl;">
                         <thead>
-                            <tr style="height:31px;background:#E2ECDD;color:#2C3E35;font-size:10px;font-weight:900;">
-                                <th style="padding:6px 8px;text-align:right;border-left:1px solid #C9D6C4;">اسم الطالبة</th>
-                                <th style="padding:5px;text-align:center;border-left:1px solid #C9D6C4;">الحضور</th>
-                                <th style="padding:5px;text-align:center;border-left:1px solid #C9D6C4;">التتابع</th>
+                            <tr style="height:30px;background:rgba(213,228,207,0.9);color:#1F2E27;font-size:10px;font-weight:900;">
+                                <th style="padding:5px 8px;text-align:right;border-left:1px solid rgba(175,194,174,0.4);">اسم الطالبة</th>
+                                <th style="padding:5px;text-align:center;border-left:1px solid rgba(175,194,174,0.4);">الحضور</th>
+                                <th style="padding:5px;text-align:center;border-left:1px solid rgba(175,194,174,0.4);">التتابع</th>
                                 <th style="padding:5px;text-align:center;">اليوم</th>
                             </tr>
                         </thead>
@@ -1190,26 +862,16 @@
                 alert("لا توجد طالبات للتصدير!");
                 return;
             }
-            if (typeof html2canvas !== 'function') {
-                alert("تعذر تحميل أداة حفظ الصورة. تأكدي من اتصال الإنترنت ثم أعيدي المحاولة.");
-                return;
-            }
 
             const exportButton = document.querySelector('button[onclick="exportAttendanceCard()"]');
-            const originalButtonHTML = exportButton ? exportButton.innerHTML : '';
             const target = document.getElementById('export-card-target');
 
             try {
-                if (exportButton) {
-                    exportButton.disabled = true;
-                    exportButton.innerHTML = '<i data-lucide="loader-circle" class="w-4 h-4 animate-spin"></i> جاري حفظ الصورة...';
-                    lucide.createIcons();
-                }
+                if (exportButton) exportButton.disabled = true;
 
                 const today = getTodayDateStr();
-                const presentCount = circle.students.filter(s => Array.isArray(s.history) && s.history.includes(today)).length;
+                const presentCount = circle.students.filter(s => s.history.includes(today)).length;
                 const totalCount = circle.students.length;
-                const absentCount = totalCount - presentCount;
                 const percent = totalCount ? Math.round((presentCount / totalCount) * 100) : 0;
 
                 document.getElementById('card-export-date').textContent = today;
@@ -1217,100 +879,59 @@
                 document.getElementById('card-display-circle').textContent = circle.circleName || '--';
                 document.getElementById('card-display-teacher').textContent = circle.teacherName || '--';
                 document.getElementById('card-export-present-count').textContent = presentCount;
-                const totalEl = document.getElementById('card-export-total-count');
-                if (totalEl) totalEl.textContent = totalCount;
-                document.getElementById('card-export-absent-count').textContent = absentCount;
+                document.getElementById('card-export-absent-count').textContent = totalCount - presentCount;
                 document.getElementById('card-export-percent').textContent = percent + '%';
 
-                const sortedStudents = [...circle.students].sort((a,b) => a.name.localeCompare(b.name, 'ar'));
+                const sorted = [...circle.students].sort((a,b) => a.name.localeCompare(b.name, 'ar'));
                 const container = document.getElementById('export-tables-container');
-                if (sortedStudents.length > 24) {
-                    const mid = Math.ceil(sortedStudents.length / 2);
-                    container.innerHTML = buildExportTableHTML(sortedStudents.slice(0, mid), today) + buildExportTableHTML(sortedStudents.slice(mid), today);
+                if (sorted.length > 24) {
+                    const mid = Math.ceil(sorted.length / 2);
+                    container.innerHTML = buildExportTableHTML(sorted.slice(0, mid), today) + buildExportTableHTML(sorted.slice(mid), today);
                 } else {
-                    container.innerHTML = buildExportTableHTML(sortedStudents, today);
+                    container.innerHTML = buildExportTableHTML(sorted, today);
                 }
 
-                // Make the target measurable while keeping it outside the visible page.
                 target.parentElement.style.visibility = 'visible';
                 target.style.visibility = 'visible';
                 target.style.display = 'block';
-                target.style.position = 'relative';
-                target.style.left = '0';
-                target.style.top = '0';
 
                 if (document.fonts?.ready) await document.fonts.ready;
-                await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
                 const canvas = await html2canvas(target, {
                     scale: 1.45,
                     backgroundColor: '#FBF7EE',
                     useCORS: true,
                     allowTaint: false,
-                    logging: false,
                     width: 794,
                     height: 1123,
                     windowWidth: 794,
-                    windowHeight: 1123,
-                    scrollX: 0,
-                    scrollY: 0
+                    windowHeight: 1123
                 });
 
-                // Restore the hidden export target immediately after capture.
-                target.style.position = 'relative';
                 target.parentElement.style.visibility = 'hidden';
 
                 const fileName = `تقرير_همة_${(circle.circleName || 'الحلقة').replace(/\s+/g,'_')}_${today}.png`;
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1));
-                if (!blob) throw new Error('PNG creation failed');
-
-                const url = URL.createObjectURL(blob);
+                const blob = await new Promise(res => canvas.toBlob(res, 'image/png', 1));
                 const link = document.createElement('a');
-                link.href = url;
+                link.href = URL.createObjectURL(blob);
                 link.download = fileName;
-                link.setAttribute('download', fileName);
-                link.style.position = 'fixed';
-                link.style.left = '-9999px';
-                document.body.appendChild(link);
                 link.click();
-                link.remove();
-
-                // Fallback for Android browsers that ignore download on Blob URLs.
-                setTimeout(async () => {
-                    if (navigator.share && typeof File !== 'undefined') {
-                        try {
-                            const file = new File([blob], fileName, { type: 'image/png' });
-                            if (navigator.canShare?.({ files:[file] })) {
-                                // Do not interrupt normal download; share is only a fallback the user can use from the toast.
-                                window.__himmaLastImage = { file, url, fileName };
-                            }
-                        } catch(e) {}
-                    }
-                    URL.revokeObjectURL(url);
-                }, 7000);
 
                 const toast = document.getElementById('success-toast');
                 if (toast) {
-                    toast.textContent = '✓ تم تجهيز صورة التقرير وحفظها';
                     toast.classList.add('show');
                     setTimeout(() => toast.classList.remove('show'), 3000);
                 }
-                if (typeof confetti === 'function') {
-                    confetti({ particleCount: 45, spread: 55, startVelocity: 22, origin: { y: .75 }, colors: ['#D5E4CF','#AFC2AE','#2C3E35','#C79B32'] });
-                }
-            } catch (error) {
-                console.error('Export error:', error);
+                if (typeof confetti === 'function') confetti({ particleCount: 45, spread: 55, origin: { y: .75 } });
+            } catch (err) {
+                console.error(err);
                 target.parentElement.style.visibility = 'hidden';
-                alert("ما قدرت أحفظ الصورة. أعيدي المحاولة مرة ثانية، وإذا استمرت المشكلة افتحي هِمّة من Chrome.");
+                alert("حدث خطأ أثناء حفظ الصورة، تأكدي من رفع صورة الخلفية إلى الـ Git.");
             } finally {
-                if (exportButton) {
-                    exportButton.disabled = false;
-                    exportButton.innerHTML = originalButtonHTML;
-                    lucide.createIcons();
-                }
+                if (exportButton) exportButton.disabled = false;
             }
         }
-
     </script>
 </body>
 </html>
