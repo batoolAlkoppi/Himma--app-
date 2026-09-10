@@ -228,7 +228,7 @@
                     </div>
 
                     <!-- EXPORT TABLES CONTAINER -->
-                    <div id="export-tables-container" style="display: flex; gap: 15px; align-items: flex-start; justify-content: center; margin-bottom: 50px;">
+                    <div id="export-tables-container" style="display: flex; justify-content: space-between; gap: 15px; width: 100%; margin-bottom: 50px;">
                     </div>
 
                     <!-- SIGNATURE -->
@@ -551,7 +551,7 @@
             }).join('');
 
             return `
-                <table style="width: 100%; max-width: 370px; border-collapse: collapse; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden; direction: rtl;">
+                <table style="width: 48%; border-collapse: collapse; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden; direction: rtl;">
                     <thead>
                         <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 11px;">
                             <th style="padding: 6px 8px; text-align: center; width: 28%; border-left: 1px solid #AFC2AE;">اليوم</th>
@@ -597,7 +597,7 @@
                 const mid = Math.ceil(sortedStudents.length / 2);
                 container.innerHTML = buildExportTableHTML(sortedStudents.slice(0, mid), today) + buildExportTableHTML(sortedStudents.slice(mid), today);
             } else {
-                container.innerHTML = buildExportTableHTML(sortedStudents, today);
+                container.innerHTML = buildExportTableHTML(sortedStudents, today) + '<div style="width: 48%;"></div>';
             }
 
             const target = document.getElementById('export-card-target');
