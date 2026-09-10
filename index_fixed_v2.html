@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هِمّة ᰔᩚ- نظام إدارة حلقات القرآن الكريم</title>
+
+    <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2C3E35">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FCF7EC',
+                        sage: '#D5E4CF',
+                        olive: '#AFC2AE',
+                        slate: '#78867B',
+                        forest: '#1F2E27',
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        amiri: ['Amiri', 'serif'],
+                        signature: ['Dancing Script', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #FCF7EC; color: #1F2E27; }
+        .font-amiri { font-family: 'Amiri', serif; }
+        .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(175, 194, 174, 0.5); }
+        
+        .heart-badge {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        .heart-badge:hover { transform: translateY(-2px); }
+        .heart-badge svg { width: 100%; height: 100%; display: block; }
+        .heart-badge .count-number {
+            position: absolute;
+            font-size: 10px;
+            font-weight: 800;
+            color: #ffffff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -52%);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
+        .heart-badge.fill-0 .count-number { color: #475569; }
+        .heart-badge.fill-1 svg { color: #f87171; fill: #f87171; } 
+        .heart-badge.fill-2 svg { color: #ef4444; fill: #ef4444; } 
+        .heart-badge.fill-3 svg { color: #dc2626; fill: #dc2626; } 
+        .heart-badge.fill-4 svg { color: #991b1b; fill: #991b1b; } 
+        .heart-badge.fill-5 svg { color: #581c87; fill: #581c87; } 
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #FCF7EC; }
+        ::-webkit-scrollbar-thumb { background: #AFC2AE; border-radius: 4px; }
+        
+        [contenteditable="true"]:hover {
+            background-color: rgba(213, 228, 207, 0.3);
+            border-radius: 4px;
+            cursor: text;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col min-h-screen justify-between selection:bg-sage selection:text-forest">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-30 glass-panel border-b border-olive/30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30 overflow-hidden">
+                    <img src="icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40?text=هـ'">
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-forest leading-none">هِمّة</h1>
+                    <span class="text-[11px] text-slate font-medium">إدارة الحلقات</span>
+                </div>
+            </div>
+            
+            <div id="pwa-install-container" class="hidden">
+                <button id="pwa-install-btn" class="bg-forest text-cream px-3.5 py-1.5 rounded-xl text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> تثبيت التطبيق
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-grow w-full">
+
+        <!-- SELECTOR BAR & MINI INPUTS -->
+        <div class="glass-panel p-3 rounded-2xl mb-4 flex flex-col md:flex-row items-center justify-between gap-3 border border-olive/40 shadow-sm">
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <select id="circle-selector" onchange="changeActiveCircle(this.value)" class="w-full md:w-48 bg-cream border border-olive/40 rounded-lg px-2.5 py-1.5 text-xs font-bold text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                </select>
+                <button onclick="createNewCirclePrompt()" class="bg-forest text-cream px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1 shrink-0">
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> جديدة
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
+                <input type="text" id="input-mosque" placeholder="المسجد" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-32 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                <input type="text" id="input-teacher" placeholder="المعلمة" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+            </div>
+        </div>
+
+        <!-- ATTENDANCE CIRCLE & STATS WIDGET -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+            <div class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="relative w-14 h-14 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                            <path class="text-olive/30" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="attendance-circle-bar" class="text-forest transition-all duration-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <span id="attendance-percent-display" class="absolute text-xs font-black text-forest">0%</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs font-bold text-slate">نسبة الحضور</span>
+                        <div class="flex items-center gap-1 mt-0.5 text-[10px] text-slate font-semibold">
+                            <i data-lucide="trending-up" class="w-3 h-3 text-emerald-600"></i> خط حيوي
+                        </div>
+                    </div>
+                </div>
+                <div class="text-left text-xs space-y-0.5 font-bold pl-2 border-r border-olive/20">
+                    <div class="text-emerald-700">حاضرات: <span id="stat-present">0</span></div>
+                    <div class="text-red-600">غائبات: <span id="stat-absent">0</span></div>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center">
+                <form onsubmit="addStudent(event)" class="flex gap-2 w-full">
+                    <input type="text" id="input-student-name" placeholder="أدخلي اسم الطالبة الجديدة..." required class="flex-grow bg-cream border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                    <button type="submit" class="bg-forest text-cream font-bold px-4 py-1.5 rounded-xl hover:bg-forest/90 transition text-xs shadow-sm shrink-0">
+                        إضافة طالبة
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TABLE SECTION -->
+        <section class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/30 mb-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mb-3">
+                <div class="text-xs font-bold text-forest">سجل الحضور (<span id="student-count">0</span> طالبة) - مرتب أبجدياً</div>
+                <div class="relative w-full sm:w-56">
+                    <input type="text" id="search-student-input" oninput="renderStudentsTable()" placeholder="بحث..." class="w-full bg-cream border border-olive/30 rounded-lg pr-7 pl-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate absolute right-2 top-2"></i>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto max-h-[420px]">
+                <table class="w-full text-right text-xs border-collapse whitespace-nowrap">
+                    <thead class="sticky top-0 bg-sage/80 backdrop-blur-sm z-10">
+                        <tr class="text-forest font-bold border-b border-olive/30">
+                            <th class="p-2.5 border-l border-olive/20 w-2/5">الاسم (انقري للتعديل)</th>
+                            <th class="p-2.5 text-center border-l border-olive/20 w-1v5">حضور اليوم</th>
+                            <th class="p-2.5 text-center border-l border-olive/20 w-1/6">التتابع</th>
+                            <th class="p-2.5 text-center border-l border-olive/20 w-1/6">مجموع الحضور</th>
+                            <th class="p-2.5 text-center w-1/12">حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-tbody" class="divide-y divide-olive/10"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SEPARATE EXTERNAL EXPORT BUTTON (OUTSIDE FRAME) -->
+        <div class="flex justify-center mb-6">
+            <button type="button" onclick="exportAttendanceCard()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-6 py-2.5 rounded-xl transition text-sm flex items-center gap-2 shadow-lg">
+                <i data-lucide="image" class="w-4 h-4"></i> حفظ تقرير الحضور كصورة A4
+            </button>
+        </div>
+
+        <!-- EXPORT TARGET (A4 SIZE SETUP FOR UP TO 50 NAMES) -->
+        <div style="position:fixed; left:-10000px; top:0; width:794px; overflow:visible; pointer-events:none; opacity:1; z-index:-1;">
+            <div id="export-card-target" style="width: 794px; min-height: 1123px; background-color: #FCF7EC; padding: 35px 35px 65px 35px; position: relative; font-family: 'Cairo', sans-serif; color: #1F2E27; box-sizing: border-box;">
+                
+                <div style="position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 2px solid #AFC2AE; border-radius: 16px; pointer-events: none;"></div>
+                <div style="position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1px dashed #78867B; border-radius: 12px; pointer-events: none;"></div>
+
+                <div style="position: relative; z-index: 10;">
+                    <div style="text-align: center; margin-bottom: 12px;">
+                        <h2 class="font-amiri" style="font-size: 24px; font-weight: bold; color: #1F2E27; margin: 0;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 12px; border-bottom: 2px solid #AFC2AE; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #78867B;">🕌 المسجد: <span id="card-display-mosque" style="color:#1F2E27">--</span></div>
+                            <h3 style="font-size: 20px; font-weight: 900; margin: 0;">تقرير حلقة <span id="card-display-circle" style="color: #1F2E27;">--</span></h3>
+                            <span style="font-size: 13px; color: #78867B; font-weight: bold; display: block; margin-top: 4px;">المعلمة: <span id="card-display-teacher" style="color:#1F2E27">--</span></span>
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="font-size: 12px; font-weight: bold; color: #78867B;">التاريخ: <span id="card-export-date" style="color:#1F2E27">--</span></div>
+                        </div>
+                    </div>
+
+                    <!-- ATTENDANCE SUMMARY BADGE ON EXPORT -->
+                    <div style="background-color: #D5E4CF; border: 1px solid #AFC2AE; border-radius: 8px; padding: 8px 15px; margin-bottom: 18px; display: flex; justify-content: space-around; font-size: 13px; font-weight: bold; color: #1F2E27;">
+                        <div>إجمالي الحضور: <span id="card-export-present-count" style="color: #047857;">0</span> من <span id="card-export-total-count">0</span></div>
+                        <div>الغائبات: <span id="card-export-absent-count" style="color: #B91C1C;">0</span></div>
+                        <div>نسبة الحضور: <span id="card-export-percent" style="color: #1F2E27;">0%</span></div>
+                    </div>
+
+                    <!-- EXPORT TABLES CONTAINER (Compact columns for up to 50 names) -->
+                    <div id="export-tables-container" style="display:flex; flex-direction:row; gap:15px; align-items:flex-start; justify-content:center; width:100%; margin-bottom:40px;">
+                    </div>
+
+                    <!-- SIGNATURE AT THE SAFE BOTTOM FOOTER OF A4 IMAGE -->
+                    <div style="position: absolute; bottom: 22px; left: 35px; font-family: 'Dancing Script', cursive; font-size: 20px; color: #78867B; font-weight: bold;">
+                        Developed by Batool Al-Koubi
+                    </div>
+                    <div style="position: absolute; bottom: 22px; right: 35px; font-size: 11px; font-weight: bold; color: #AFC2AE;">
+                        نظام هِمّة لإدارة الحلقات القرآنية
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V7';
+
+        function getTodayDateStr() {
+            const today = new Date();
+            return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        }
+
+        const defaultInitialData = {
+            activeCircleId: 'circle_1',
+            circles: [{ id: 'circle_1', mosqueName: 'المحمدي', circleName: 'غيث القلوب', teacherName: 'الآنسة ريم', students: [] }]
+        };
+
+        let appData = defaultInitialData;
+        let deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwa-install-container').classList.remove('hidden');
+        });
+
+        document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('pwa-install-container').classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            lucide.createIcons();
+        });
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try { appData = JSON.parse(saved); } catch (e) { appData = defaultInitialData; }
+            }
+            renderAll();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            renderAll();
+        }
+
+        function getActiveCircle() {
+            if (!appData.circles || appData.circles.length === 0) return null;
+            return appData.circles.find(c => c.id === appData.activeCircleId) || appData.circles[0];
+        }
+
+        function renderAll() {
+            const circle = getActiveCircle();
+            const selector = document.getElementById('circle-selector');
+            selector.innerHTML = '';
+
+            if (!circle) return;
+
+            appData.circles.forEach(c => {
+                selector.innerHTML += `<option value="${c.id}" ${c.id === appData.activeCircleId ? 'selected' : ''}>${c.circleName} (${c.mosqueName})</option>`;
+            });
+
+            document.getElementById('input-mosque').value = circle.mosqueName || '';
+            document.getElementById('input-circle-name').value = circle.circleName || '';
+            document.getElementById('input-teacher').value = circle.teacherName || '';
+
+            document.getElementById('card-display-mosque').innerText = circle.mosqueName || '--';
+            document.getElementById('card-display-circle').innerText = circle.circleName || '--';
+            document.getElementById('card-display-teacher').innerText = circle.teacherName || '--';
+            document.getElementById('student-count').innerText = circle.students.length;
+
+            renderStudentsTable();
+            lucide.createIcons();
+        }
+
+        function changeActiveCircle(circleId) {
+            appData.activeCircleId = circleId;
+            saveData();
+        }
+
+        function createNewCirclePrompt() {
+            const name = prompt("أدخلي اسم الحلقة الجديدة:");
+            if (!name) return;
+            const mosque = prompt("اسم المسجد:") || "";
+            const teacher = prompt("اسم المعلمة:") || "";
+            const newCircle = { id: 'circle_' + Date.now(), mosqueName: mosque, circleName: name.trim(), teacherName: teacher, students: [] };
+            appData.circles.push(newCircle);
+            appData.activeCircleId = newCircle.id;
+            saveData();
+        }
+
+        function updateCircleDetails() {
+            const circle = getActiveCircle();
+            if (!circle) return;
+            circle.mosqueName = document.getElementById('input-mosque').value;
+            circle.circleName = document.getElementById('input-circle-name').value;
+            circle.teacherName = document.getElementById('input-teacher').value;
+            saveData();
+        }
+
+        function addStudent(e) {
+            e.preventDefault();
+            const circle = getActiveCircle();
+            const input = document.getElementById('input-student-name');
+            const name = input.value.trim();
+            if (!name || !circle) return;
+            circle.students.push({ id: Date.now().toString(), name: name, history: [], manualStreak: null });
+            input.value = '';
+            saveData();
+        }
+
+        function updateStudentName(id, newName) {
+            const circle = getActiveCircle();
+            const student = circle.students.find(s => s.id === id);
+            if (student && newName.trim()) {
+                student.name = newName.trim();
+                saveData();
+            }
+        }
+
+        function toggleAttendance(studentId) {
+            const circle = getActiveCircle();
+            const student = circle.students.find(s => s.id === studentId);
+            const today = getTodayDateStr();
+            const index = student.history.indexOf(today);
+            
+            if (index > -1) {
+                student.history.splice(index, 1);
+            } else {
+                student.history.push(today);
+                student.history.sort();
+            }
+            saveData();
+        }
+
+        function getStreak(student) {
+            if(student.manualStreak !== undefined && student.manualStreak !== null) {
+                return parseInt(student.manualStreak);
+            }
+            if (!student.history || student.history.length === 0) return 0;
+            
+            let streak = 1;
+            let sorted = [...student.history].sort();
+            for(let i = sorted.length - 1; i > 0; i--) {
+                let d1 = new Date(sorted[i]);
+                let d2 = new Date(sorted[i-1]);
+                let diff = (d1 - d2) / (1000 * 60 * 60 * 24);
+                if (diff <= 5) streak++;
+                else break;
+            }
+            return streak;
+        }
+
+        function editStudentStreak(id) {
+            const circle = getActiveCircle();
+            const student = circle.students.find(s => s.id === id);
+            if(student) {
+                let current = getStreak(student);
+                let val = prompt("أدخلي رقم التتابع:", current);
+                if (val !== null && val.trim() !== "" && !isNaN(val)) {
+                    student.manualStreak = parseInt(val);
+                    saveData();
+                } else if (val === "") {
+                    student.manualStreak = null; 
+                    saveData();
+                }
+            }
+        }
+
+        function getHeartColorClass(streak) {
+            const fill = Math.min(streak, 5);
+            return `fill-${fill}`;
+        }
+
+        function renderHeartBadgeHTML(streakCount, studentId) {
+            const colorClass = getHeartColorClass(streakCount);
+            return `
+                <div class="heart-badge ${colorClass}" onclick="editStudentStreak('${studentId}')" title="تعديل التتابع">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span class="count-number">${streakCount}</span>
+                </div>
+            `;
+        }
+
+        function renderStudentsTable() {
+            const tbody = document.getElementById('student-tbody');
+            tbody.innerHTML = '';
+            const circle = getActiveCircle();
+            if (!circle) return;
+
+            const today = getTodayDateStr();
+            const searchQuery = (document.getElementById('search-student-input')?.value || '').trim().toLowerCase();
+            
+            let filtered = circle.students.filter(s => s.name.toLowerCase().includes(searchQuery));
+            filtered.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+
+            let presentCount = 0;
+            circle.students.forEach(s => {
+                if(s.history.includes(today)) presentCount++;
+            });
+            let absentCount = circle.students.length - presentCount;
+            let percent = circle.students.length > 0 ? Math.round((presentCount / circle.students.length) * 100) : 0;
+
+            document.getElementById('attendance-percent-display').innerText = percent + '%';
+            document.getElementById('attendance-circle-bar').setAttribute('stroke-dasharray', `${percent}, 100`);
+            document.getElementById('stat-present').innerText = presentCount;
+            document.getElementById('stat-absent').innerText = absentCount;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-slate">لا توجد طالبات مطابقة</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(student => {
+                const isPresent = student.history.includes(today);
+                const streak = getStreak(student);
+                const totalAttendanceCount = streak;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-sage/10 transition border-b border-olive/10">
+                        <td class="p-2 font-bold text-forest border-l border-olive/20">
+                            <span contenteditable="true" onblur="updateStudentName('${student.id}', this.innerText)" class="px-1 py-0.5 outline-none">${student.name}</span>
+                        </td>
+                        <td class="p-2 text-center border-l border-olive/20">
+                            <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1 rounded-md text-[11px] font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-cream text-slate border border-olive/30 hover:bg-sage/40'}">
+                                ${isPresent ? '✓ حاضرة' : 'غائبة'}
+                            </button>
+                        </td>
+                        <td class="p-2 text-center border-l border-olive/20">
+                            ${renderHeartBadgeHTML(streak, student.id)}
+                        </td>
+                        <td class="p-2 text-center font-bold text-forest border-l border-olive/20">
+                            ${totalAttendanceCount}
+                        </td>
+                        <td class="p-2 text-center">
+                            <button onclick="deleteStudent('${student.id}')" class="text-red-400 hover:text-red-600 p-1 transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function deleteStudent(id) {
+            const circle = getActiveCircle();
+            if (confirm("هل أنتِ متأكدة من حذف هذه الطالبة؟")) {
+                circle.students = circle.students.filter(s => s.id !== id);
+                saveData();
+            }
+        }
+
+        function buildExportTableHTML(studentsSubset, today) {
+            let rows = studentsSubset.map((s, idx) => {
+                const isPresent = s.history.includes(today);
+                const streak = getStreak(s);
+                const totalAttendanceCount = streak;
+                const hexColor = streak>=5?'#581c87':streak==4?'#991b1b':streak==3?'#dc2626':streak==2?'#ef4444':streak==1?'#f87171':'#cbd5e1';
+                const textColor = streak===0?'#475569':'#ffffff';
+
+                return `
+                    <tr style="border-bottom: 1px solid #AFC2AE; background-color: ${idx % 2 === 0 ? '#FFFFFF' : '#FCF7EC'};">
+                        <td style="padding: 6px 8px; font-weight: bold; font-size: 12px; border-left: 1px solid #AFC2AE; color:#1F2E27; width: 45%;">${s.name}</td>
+                        <td style="padding: 6px 4px; text-align: center; border-left: 1px solid #AFC2AE; width: 20%;">
+                            <div style="display:inline-block; position:relative; width:24px; height:24px; vertical-align:middle;">
+                                <svg style="width:100%; height:100%; color:${hexColor}; fill:currentColor;" viewBox="0 0 24 24">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                <span style="position:absolute; top:0; left:0; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-family:Arial, sans-serif; font-size:10px; line-height:24px; font-weight:800; color:${textColor}; z-index:2;">${streak}</span>
+                            </div>
+                        </td>
+                        <td style="padding: 6px 6px; text-align: center; font-weight: bold; font-size: 12px; border-left: 1px solid #AFC2AE; color: #1F2E27; width: 18%;">${totalAttendanceCount}</td>
+                        <td style="padding: 6px 6px; text-align: center; font-weight: bold; font-size: 12px; color: ${isPresent ? '#047857' : '#B91C1C'}; width: 17%;">${isPresent ? '✓' : '✗'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <table style="width: 100%; max-width: 360px; border-collapse: collapse; table-layout: fixed; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden;">
+                    <thead>
+                        <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 11px;">
+                            <th style="padding: 6px 8px; border-left: 1px solid #AFC2AE;">اسم الطالبة</th>
+                            <th style="padding: 6px 4px; border-left: 1px solid #AFC2AE; text-align: center;">التتابع</th>
+                            <th style="padding: 6px 6px; border-left: 1px solid #AFC2AE; text-align: center;">المجموع</th>
+                            <th style="padding: 6px 6px; text-align: center;">اليوم</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        }
+
+        async function exportAttendanceCard() {
+            const circle = getActiveCircle();
+            if (!circle || circle.students.length === 0) {
+                alert("لا توجد طالبات للتصدير!");
+                return;
+            }
+
+            confetti({
+                particleCount: 90,
+                spread: 60,
+                origin: { y: 0.6 },
+                colors: ['#D5E4CF', '#AFC2AE', '#1F2E27']
+            });
+
+            const today = getTodayDateStr();
+            document.getElementById('card-export-date').innerText = today;
+
+            let presentCount = 0;
+            circle.students.forEach(s => {
+                if (s.history.includes(today)) presentCount++;
+            });
+
+            let totalCount = circle.students.length;
+            let absentCount = totalCount - presentCount;
+            let percent = totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0;
+
+            document.getElementById('card-export-present-count').innerText = presentCount;
+            document.getElementById('card-export-total-count').innerText = totalCount;
+            document.getElementById('card-export-absent-count').innerText = absentCount;
+            document.getElementById('card-export-percent').innerText = percent + '%';
+
+            let sortedStudents = [...circle.students].sort((a, b) =>
+                a.name.localeCompare(b.name, 'ar')
+            );
+
+            const container = document.getElementById('export-tables-container');
+            container.innerHTML = '';
+
+            if (sortedStudents.length > 24) {
+                const mid = Math.ceil(sortedStudents.length / 2);
+
+                const table1 = document.createElement('div');
+                const table2 = document.createElement('div');
+
+                table1.style.cssText = 'width:calc(50% - 7.5px); min-width:0;';
+                table2.style.cssText = 'width:calc(50% - 7.5px); min-width:0;';
+
+                table1.innerHTML = buildExportTableHTML(sortedStudents.slice(0, mid), today);
+                table2.innerHTML = buildExportTableHTML(sortedStudents.slice(mid), today);
+
+                container.appendChild(table1);
+                container.appendChild(table2);
+            } else {
+                const table = document.createElement('div');
+                table.style.cssText = 'width:100%;';
+                table.innerHTML = buildExportTableHTML(sortedStudents, today);
+                container.appendChild(table);
+            }
+
+            const target = document.getElementById('export-card-target');
+
+            // Ensure fonts are ready before html2canvas measures the layout.
+            if (document.fonts && document.fonts.ready) {
+                await document.fonts.ready;
+            }
+
+            // Let the browser finish layout/paint.
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+            try {
+                const canvas = await html2canvas(target, {
+                    scale: 2,
+                    backgroundColor: '#FCF7EC',
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    imageTimeout: 15000,
+                    foreignObjectRendering: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 794,
+                    windowHeight: 1123
+                });
+
+                const link = document.createElement('a');
+                link.download = `تقرير_${circle.circleName.replace(/\s+/g, '_')}_${today}.png`;
+
+                // toBlob is more reliable for large A4 PNG exports than a huge data URL.
+                canvas.toBlob(blob => {
+                    if (!blob) {
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        return;
+                    }
+
+                    const url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.click();
+
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                }, 'image/png');
+            } catch (error) {
+                console.error('Export error:', error);
+                alert("تعذر حفظ الصورة. حاولي مرة أخرى.");
+            }
+        }
+    </script>
+</body>
+</html>
