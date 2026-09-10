@@ -49,25 +49,24 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 28px;
-            height: 28px;
-            transition: all 0.3s ease;
+            width: 26px;
+            height: 26px;
             margin: 0 auto;
             cursor: pointer;
         }
-        .heart-badge:hover { transform: translateY(-2px); }
         .heart-badge svg { width: 100%; height: 100%; display: block; }
         .heart-badge .count-number {
             position: absolute;
             font-size: 11px;
             font-weight: 900;
             color: #ffffff;
-            top: 50%;
+            top: 48%;
             left: 50%;
             transform: translate(-50%, -50%);
             line-height: 1;
             text-align: center;
             pointer-events: none;
+            width: 100%;
         }
 
         .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
@@ -245,7 +244,7 @@
     </main>
 
     <script>
-        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V8';
+        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V9';
 
         function getTodayDateStr() {
             const today = new Date();
@@ -537,16 +536,16 @@
 
                 return `
                     <tr style="border-bottom: 1px solid #AFC2AE; background-color: ${idx % 2 === 0 ? '#FFFFFF' : '#FCF7EC'};">
-                        <td style="padding: 6px 8px; text-align: center; font-weight: bold; font-size: 12px; color: ${isPresent ? '#047857' : '#B91C1C'}; width: 22%; border-left: 1px solid #AFC2AE;">${isPresent ? '✓' : '✗'}</td>
+                        <td style="padding: 6px 8px; text-align: center; font-weight: bold; font-size: 12px; color: ${isPresent ? '#047857' : '#B91C1C'}; width: 28%; border-left: 1px solid #AFC2AE;">${isPresent ? '✓' : '✗'}</td>
                         <td style="padding: 6px 6px; text-align: center; width: 26%; border-left: 1px solid #AFC2AE;">
                             <div style="display:inline-block; position:relative; width:26px; height:26px; vertical-align:middle;">
                                 <svg style="width:100%; height:100%; color:${hexColor}; fill:currentColor;" viewBox="0 0 24 24">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
-                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:11px; font-weight:900; color:${textColor}; line-height:1; text-align:center;">${streak}</span>
+                                <span style="position:absolute; top:48%; left:50%; transform:translate(-50%, -50%); font-size:11px; font-weight:900; color:${textColor}; line-height:1; text-align:center; width:100%;">${streak}</span>
                             </div>
                         </td>
-                        <td style="padding: 6px 10px; font-weight: bold; font-size: 12px; color:#1F2E27; width: 52%; text-align: right;">${s.name}</td>
+                        <td style="padding: 6px 10px; font-weight: bold; font-size: 12px; color:#1F2E27; width: 46%; text-align: right;">${s.name}</td>
                     </tr>
                 `;
             }).join('');
@@ -555,9 +554,9 @@
                 <table style="width: 100%; max-width: 370px; border-collapse: collapse; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden; direction: rtl;">
                     <thead>
                         <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 11px;">
-                            <th style="padding: 6px 8px; text-align: center; width: 22%; border-left: 1px solid #AFC2AE;">اليوم</th>
+                            <th style="padding: 6px 8px; text-align: center; width: 28%; border-left: 1px solid #AFC2AE;">اليوم</th>
                             <th style="padding: 6px 6px; text-align: center; width: 26%; border-left: 1px solid #AFC2AE;">التتابع</th>
-                            <th style="padding: 6px 10px; text-align: right; width: 52%;">اسم الطالبة</th>
+                            <th style="padding: 6px 10px; text-align: right; width: 46%;">اسم الطالبة</th>
                         </tr>
                     </thead>
                     <tbody>${rows}</tbody>
@@ -602,28 +601,22 @@
             }
 
             const target = document.getElementById('export-card-target');
-
-            target.style.position = 'fixed';
-            target.style.top = '0';
+            
+            target.style.position = 'relative';
             target.style.left = '0';
-            target.style.zIndex = '99999';
-            target.style.opacity = '0';
-            target.style.pointerEvents = 'none';
+            target.style.top = '0';
+            target.style.zIndex = '9999';
 
             setTimeout(() => {
                 html2canvas(target, {
                     scale: 2, 
                     backgroundColor: '#FCF7EC',
                     useCORS: true,
-                    logging: false,
-                    windowWidth: 794,
-                    windowHeight: 1123
+                    logging: false
                 }).then(canvas => {
-                    target.style.position = '';
-                    target.style.top = '';
-                    target.style.left = '';
-                    target.style.zIndex = '';
-                    target.style.opacity = '';
+                    target.style.position = 'absolute';
+                    target.style.left = '-9999px';
+                    target.style.top = '-9999px';
 
                     const link = document.createElement('a');
                     link.download = `تقرير_${circle.circleName.replace(/\s+/g, '_')}_${today}.png`;
@@ -634,11 +627,12 @@
                     document.body.removeChild(link);
                 }).catch(err => {
                     console.error("خطأ أثناء التصدير:", err);
-                    target.style.position = '';
-                    target.style.opacity = '';
+                    target.style.position = 'absolute';
+                    target.style.left = '-9999px';
+                    target.style.top = '-9999px';
                     alert("حدث خطأ أثناء حفظ الصورة.");
                 });
-            }, 400);
+            }, 500);
         }
     </script>
 </body>
