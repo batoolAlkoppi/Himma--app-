@@ -64,8 +64,9 @@
             color: #ffffff;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -52%);
+            transform: translate(-50%, -50%);
             line-height: 1;
+            text-align: center;
             pointer-events: none;
         }
 
@@ -197,7 +198,7 @@
             </button>
         </div>
 
-        <!-- EXPORT TARGET (A4 SIZE SETUP - VISIBLE TO html2canvas) -->
+        <!-- EXPORT TARGET (A4 SIZE SETUP) -->
         <div style="position: absolute; left: -9999px; top: -9999px;">
             <div id="export-card-target" style="width: 794px; min-height: 1123px; background-color: #FCF7EC; padding: 40px; position: relative; font-family: 'Cairo', sans-serif; color: #1F2E27; box-sizing: border-box;">
                 
@@ -244,16 +245,55 @@
     </main>
 
     <script>
-        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V7';
+        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V8';
 
         function getTodayDateStr() {
             const today = new Date();
             return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         }
 
+        const initialStudentsList = [
+            { id: '1', name: 'آلاء مصطفى', history: [], manualStreak: 0 },
+            { id: '2', name: 'آية عمارين', history: [], manualStreak: 0 },
+            { id: '3', name: 'افنان خطاب', history: [], manualStreak: 0 },
+            { id: '4', name: 'إيلاف الحريب', history: [getTodayDateStr()], manualStreak: 1 },
+            { id: '5', name: 'إيناس حرب', history: [], manualStreak: 0 },
+            { id: '6', name: 'بانة عودة الله', history: [], manualStreak: 0 },
+            { id: '7', name: 'بتول عمارين', history: [], manualStreak: 0 },
+            { id: '8', name: 'بتوول الخي', history: [getTodayDateStr()], manualStreak: 1 },
+            { id: '9', name: 'براءة شرف', history: [], manualStreak: 0 },
+            { id: '10', name: 'تبارك حرب', history: [], manualStreak: 0 },
+            { id: '11', name: 'تسنيم شاهين', history: [], manualStreak: 0 },
+            { id: '12', name: 'تقى الخليل', history: [], manualStreak: 0 },
+            { id: '13', name: 'تقى جباوي', history: [], manualStreak: 0 },
+            { id: '14', name: 'ديما جهماني', history: [], manualStreak: 0 },
+            { id: '15', name: 'دينا جهماني', history: [], manualStreak: 0 },
+            { id: '16', name: 'رغد عطية', history: [], manualStreak: 0 },
+            { id: '17', name: 'رغد عمارين', history: [], manualStreak: 0 },
+            { id: '18', name: 'زهراء الخليل', history: [], manualStreak: 0 },
+            { id: '19', name: 'زين عمارين', history: [], manualStreak: 0 },
+            { id: '20', name: 'زينب الحريري', history: [], manualStreak: 0 },
+            { id: '21', name: 'ساجدة خي', history: [], manualStreak: 0 },
+            { id: '22', name: 'ساجدة سويداني', history: [], manualStreak: 0 },
+            { id: '23', name: 'سارة عودة الله', history: [], manualStreak: 0 },
+            { id: '24', name: 'سجى نصرالله', history: [], manualStreak: 0 },
+            { id: '25', name: 'سندس عمارين', history: [], manualStreak: 0 },
+            { id: '26', name: 'شهد عمارين', history: [], manualStreak: 0 },
+            { id: '27', name: 'ضحى نصرالله', history: [], manualStreak: 0 },
+            { id: '28', name: 'غنى الخليل', history: [], manualStreak: 0 },
+            { id: '29', name: 'غنى خطاب', history: [], manualStreak: 0 },
+            { id: '30', name: 'غيداء سويداني', history: [], manualStreak: 0 },
+            { id: '31', name: 'فاطمة الشولي', history: [], manualStreak: 0 },
+            { id: '32', name: 'لجين سويداني', history: [], manualStreak: 0 },
+            { id: '33', name: 'ناهدة جهماني', history: [], manualStreak: 0 },
+            { id: '34', name: 'هبة نصرالله', history: [], manualStreak: 0 },
+            { id: '35', name: 'هند سويداني', history: [], manualStreak: 0 },
+            { id: '36', name: 'يمان الحريري', history: [], manualStreak: 0 }
+        ];
+
         const defaultInitialData = {
             activeCircleId: 'circle_1',
-            circles: [{ id: 'circle_1', mosqueName: 'المحمدي', circleName: 'غيث القلوب', teacherName: 'الآنسة ريم', students: [] }]
+            circles: [{ id: 'circle_1', mosqueName: 'المحمدي', circleName: 'غيث القلوب', teacherName: 'الآنسة ريم', students: initialStudentsList }]
         };
 
         let appData = defaultInitialData;
@@ -285,6 +325,8 @@
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 try { appData = JSON.parse(saved); } catch (e) { appData = defaultInitialData; }
+            } else {
+                appData = defaultInitialData;
             }
             renderAll();
         }
@@ -354,7 +396,7 @@
             const input = document.getElementById('input-student-name');
             const name = input.value.trim();
             if (!name || !circle) return;
-            circle.students.push({ id: Date.now().toString(), name: name, history: [], manualStreak: null });
+            circle.students.push({ id: Date.now().toString(), name: name, history: [], manualStreak: 0 });
             input.value = '';
             saveData();
         }
@@ -388,17 +430,7 @@
                 return parseInt(student.manualStreak);
             }
             if (!student.history || student.history.length === 0) return 0;
-            
-            let streak = 1;
-            let sorted = [...student.history].sort();
-            for(let i = sorted.length - 1; i > 0; i--) {
-                let d1 = new Date(sorted[i]);
-                let d2 = new Date(sorted[i-1]);
-                let diff = (d1 - d2) / (1000 * 60 * 60 * 24);
-                if (diff <= 5) streak++;
-                else break;
-            }
-            return streak;
+            return student.history.length;
         }
 
         function editStudentStreak(id) {
@@ -411,7 +443,7 @@
                     student.manualStreak = parseInt(val);
                     saveData();
                 } else if (val === "") {
-                    student.manualStreak = null; 
+                    student.manualStreak = 0; 
                     saveData();
                 }
             }
@@ -505,27 +537,27 @@
 
                 return `
                     <tr style="border-bottom: 1px solid #AFC2AE; background-color: ${idx % 2 === 0 ? '#FFFFFF' : '#FCF7EC'};">
-                        <td style="padding: 7px 10px; font-weight: bold; font-size: 13px; border-left: 1px solid #AFC2AE; color:#1F2E27; width: 60%;">${s.name}</td>
-                        <td style="padding: 7px 6px; text-align: center; border-left: 1px solid #AFC2AE; width: 22%;">
+                        <td style="padding: 6px 8px; text-align: center; font-weight: bold; font-size: 12px; color: ${isPresent ? '#047857' : '#B91C1C'}; width: 22%; border-left: 1px solid #AFC2AE;">${isPresent ? '✓' : '✗'}</td>
+                        <td style="padding: 6px 6px; text-align: center; width: 26%; border-left: 1px solid #AFC2AE;">
                             <div style="display:inline-block; position:relative; width:26px; height:26px; vertical-align:middle;">
                                 <svg style="width:100%; height:100%; color:${hexColor}; fill:currentColor;" viewBox="0 0 24 24">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
-                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -52%); font-size:12px; font-weight:900; color:${textColor};">${streak}</span>
+                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:11px; font-weight:900; color:${textColor}; line-height:1; text-align:center;">${streak}</span>
                             </div>
                         </td>
-                        <td style="padding: 7px 8px; text-align: center; font-weight: bold; font-size: 13px; color: ${isPresent ? '#047857' : '#B91C1C'}; width: 18%;">${isPresent ? '✓' : '✗'}</td>
+                        <td style="padding: 6px 10px; font-weight: bold; font-size: 12px; color:#1F2E27; width: 52%; text-align: right;">${s.name}</td>
                     </tr>
                 `;
             }).join('');
 
             return `
-                <table style="width: 100%; max-width: 360px; border-collapse: collapse; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden;">
+                <table style="width: 100%; max-width: 370px; border-collapse: collapse; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden; direction: rtl;">
                     <thead>
-                        <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 12px;">
-                            <th style="padding: 8px 10px; border-left: 1px solid #AFC2AE;">اسم الطالبة</th>
-                            <th style="padding: 8px 6px; border-left: 1px solid #AFC2AE; text-align: center;">التتابع</th>
-                            <th style="padding: 8px 8px; text-align: center;">اليوم</th>
+                        <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 11px;">
+                            <th style="padding: 6px 8px; text-align: center; width: 22%; border-left: 1px solid #AFC2AE;">اليوم</th>
+                            <th style="padding: 6px 6px; text-align: center; width: 26%; border-left: 1px solid #AFC2AE;">التتابع</th>
+                            <th style="padding: 6px 10px; text-align: right; width: 52%;">اسم الطالبة</th>
                         </tr>
                     </thead>
                     <tbody>${rows}</tbody>
@@ -571,13 +603,28 @@
 
             const target = document.getElementById('export-card-target');
 
+            target.style.position = 'fixed';
+            target.style.top = '0';
+            target.style.left = '0';
+            target.style.zIndex = '99999';
+            target.style.opacity = '0';
+            target.style.pointerEvents = 'none';
+
             setTimeout(() => {
                 html2canvas(target, {
                     scale: 2, 
                     backgroundColor: '#FCF7EC',
                     useCORS: true,
-                    logging: false
+                    logging: false,
+                    windowWidth: 794,
+                    windowHeight: 1123
                 }).then(canvas => {
+                    target.style.position = '';
+                    target.style.top = '';
+                    target.style.left = '';
+                    target.style.zIndex = '';
+                    target.style.opacity = '';
+
                     const link = document.createElement('a');
                     link.download = `تقرير_${circle.circleName.replace(/\s+/g, '_')}_${today}.png`;
                     link.href = canvas.toDataURL('image/png');
@@ -587,9 +634,11 @@
                     document.body.removeChild(link);
                 }).catch(err => {
                     console.error("خطأ أثناء التصدير:", err);
+                    target.style.position = '';
+                    target.style.opacity = '';
                     alert("حدث خطأ أثناء حفظ الصورة.");
                 });
-            }, 300);
+            }, 400);
         }
     </script>
 </body>
