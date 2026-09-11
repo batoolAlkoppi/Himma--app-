@@ -233,15 +233,19 @@
                     </div>
 
                     <!-- SIGNATURE AT THE SAFE BOTTOM FOOTER OF A4 IMAGE -->
-                    <div style="position: absolute; bottom: 22px; left: 35px; font-family: 'Dancing Script', cursive; font-size: 20px; color: #78867B; font-weight: bold;">
-                        Developed by Batool Al-Koubi
-                    </div>
-                    <div style="position: absolute; bottom: 22px; right: 35px; font-size: 11px; font-weight: bold; color: #AFC2AE;">
-                        نظام هِمّة لإدارة الحلقات القرآنية
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- EXPORT TABLES CONTAINER -->
+<div id="export-tables-container" style="display: flex; justify-content: space-between; gap: 15px; width: 100%; margin-bottom: 25px;">
+</div>
+
+<!-- SIGNATURE -->
+<div style="position: absolute; bottom: 35px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #AFC2AE; pointer-events: none;">
+    <div style="font-family: 'Dancing Script', cursive; font-size: 20px; color: #78867B;">
+        Developed by Batool Al-Koubi
+    </div>
+    <div>
+        نظام هِمّة لإدارة الحلقات القرآنية
+    </div>
+</div>
     </main>
 
     <script>
@@ -369,20 +373,28 @@
             }
         }
 
-        function toggleAttendance(studentId) {
-            const circle = getActiveCircle();
-            const student = circle.students.find(s => s.id === studentId);
-            const today = getTodayDateStr();
-            const index = student.history.indexOf(today);
-            
-            if (index > -1) {
-                student.history.splice(index, 1);
-            } else {
-                student.history.push(today);
-                student.history.sort();
-            }
-            saveData();
-        }
+         function toggleAttendance(studentId) {
+    const circle = getActiveCircle();
+    const student = circle.students.find(s => s.id === studentId);
+    const today = getTodayDateStr();
+    const index = student.history.indexOf(today);
+    
+    if (student.manualStreak === undefined || student.manualStreak === null) {
+        student.manualStreak = student.history.length;
+    }
+
+    if (index > -1) {
+        student.history.splice(index, 1);
+        student.manualStreak = Math.max(0, student.manualStreak - 1);
+    } else {
+        student.history.push(today);
+        student.history.sort();
+        student.manualStreak += 1;
+    }
+    saveData();
+         }
+
+    
 
         function getStreak(student) {
             if(student.manualStreak !== undefined && student.manualStreak !== null) {
