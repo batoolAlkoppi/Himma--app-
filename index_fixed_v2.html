@@ -237,8 +237,7 @@
 <div id="export-tables-container" style="display: flex; justify-content: space-between; gap: 15px; width: 100%; margin-bottom: 25px;">
 </div>
 
-<!-- SIGNATURE -->
-<div style="position: absolute; bottom: 35px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #AFC2AE; pointer-events: none;">
+<div style="position: absolute; bottom: 15px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #AFC2AE; pointer-events: none;">
     <div style="font-family: 'Dancing Script', cursive; font-size: 20px; color: #78867B;">
         Developed by Batool Al-Koubi
     </div>
@@ -336,7 +335,7 @@
         function createNewCirclePrompt() {
             const name = prompt("أدخلي اسم الحلقة الجديدة:");
             if (!name) return;
-            const mosque = prompt("اسم المسجد:") || "";
+            const mosque = prompt("🕌اسم المسجد:") || "";
             const teacher = prompt("اسم المعلمة:") || "";
             const newCircle = { id: 'circle_' + Date.now(), mosqueName: mosque, circleName: name.trim(), teacherName: teacher, students: [] };
             appData.circles.push(newCircle);
@@ -373,27 +372,31 @@
             }
         }
 
-         function toggleAttendance(studentId) {
+         
+    function toggleAttendance(studentId) {
     const circle = getActiveCircle();
     const student = circle.students.find(s => s.id === studentId);
     const today = getTodayDateStr();
     const index = student.history.indexOf(today);
     
+    // إذا لم يتم تفعيل التتابع اليدوي من قبل، نبدأ من عدد السجل الفعلي
     if (student.manualStreak === undefined || student.manualStreak === null) {
-        student.manualStreak = student.history.length;
+        student.manualStreak = getStreak(student);
     }
 
     if (index > -1) {
+        // إذا كانت حاضرة وتم النقر لإلغاء الحضور: نقصي التتابع بحذر (ولا يقل عن صفر)
         student.history.splice(index, 1);
         student.manualStreak = Math.max(0, student.manualStreak - 1);
     } else {
+        // إذا لم تكن حاضرة وتم النقر لتسجيل حضور اليوم: أضيفي نقطة للتتابع داخل القلب
         student.history.push(today);
         student.history.sort();
         student.manualStreak += 1;
     }
+    
     saveData();
-         }
-
+}
     
 
         function getStreak(student) {
